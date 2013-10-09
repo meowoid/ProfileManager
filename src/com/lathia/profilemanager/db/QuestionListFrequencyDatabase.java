@@ -95,6 +95,7 @@ public class QuestionListFrequencyDatabase extends FrequencyDatabase
 	
 	public Distribution getFrequency(final AbstractQuestion question)
 	{
-		return getFrequency(question.getId());
+		return null; // TODO
+//		return getFrequency(question.getId());
 	}
 }

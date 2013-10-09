@@ -52,7 +52,7 @@ public class FrequencyDatabase extends SQLiteOpenHelper
 		frequencyTable.upgradeTable(database);
 	}
 	
-	public Distribution getFrequency(final String variableName)
+	public Distribution getDistribution()
 	{
 		if (frequencyTable != null)
 		{

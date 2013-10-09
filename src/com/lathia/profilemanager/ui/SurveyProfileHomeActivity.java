@@ -18,7 +18,7 @@ import com.lathia.surveymanager.data.questions.AbstractQuestion;
 import com.lathia.surveymanager.data.questions.RatingList;
 import com.lathia.surveymanager.data.questions.RatingQuestion;
 
-public abstract class ProfileHomeActivity extends AbstractProfileActivity
+public abstract class SurveyProfileHomeActivity extends AbstractProfileActivity
 {
 	public final static String SURVEY_FILE_NAME = "surveyFileName";
 	private final static String TIMES_OF_DAY = "Times of Day";
@@ -72,14 +72,14 @@ public abstract class ProfileHomeActivity extends AbstractProfileActivity
 				
 				if (distribution != null && distribution.hasData())
 				{
-					Intent intent = new Intent(ProfileHomeActivity.this, getDistributionActivityClass());
+					Intent intent = new Intent(SurveyProfileHomeActivity.this, getDistributionActivityClass());
 					intent.putExtra(DistributionActivity.DISTRIBUTION_TITLE, adapter.getItem(position));
 					intent.putExtra(DistributionActivity.DISTRIBUTION_DATA, distribution);
 					startActivity(intent);
 				}
 				else
 				{
-					Toast.makeText(ProfileHomeActivity.this, getNoDataMessage(), Toast.LENGTH_SHORT).show();
+					Toast.makeText(SurveyProfileHomeActivity.this, getNoDataMessage(), Toast.LENGTH_SHORT).show();
 				}
 			}
 		});

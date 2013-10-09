@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import android.content.Context;
 
+import com.lathia.profilemanager.data.Distribution;
 import com.lathia.profilemanager.db.FrequencyDatabase;
 import com.lathia.surveymanager.data.AnswerList;
 import com.lathia.surveymanager.data.QuestionList;
@@ -38,6 +39,19 @@ public class ProfileManager
 			database = new FrequencyDatabase(context, groupName);
 		}
 		database.increment(variableName, value);
+	}
+	
+	public Distribution getDistribution(final String groupName)
+	{
+		FrequencyDatabase database = databaseMap.get(groupName);
+		if (database != null)
+		{
+			return database.getDistribution();
+		}
+		else
+		{
+			return null;
+		}
 	}
 	
 	public void add(final QuestionList questions, final AnswerList answers)
