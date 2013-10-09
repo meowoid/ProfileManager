@@ -17,7 +17,6 @@ import com.lathia.surveymanager.data.QuestionList;
 import com.lathia.surveymanager.data.questions.AbstractQuestion;
 import com.lathia.surveymanager.data.questions.RatingList;
 import com.lathia.surveymanager.data.questions.RatingQuestion;
-import com.lathia.surveymanager.load.QuestionListBuilder;
 
 public abstract class ProfileHomeActivity extends AbstractProfileActivity
 {
@@ -34,7 +33,7 @@ public abstract class ProfileHomeActivity extends AbstractProfileActivity
 		super.onCreate(savedInstanceState);
 		String questionFile = getIntent().getStringExtra(SURVEY_FILE_NAME);
 		SurveyDataPortal dataPortal = new SurveyDataPortal();
-		dataPortal.requestDataPush(this, new QuestionListBuilder(this, questionFile, Long.MAX_VALUE), null);
+		dataPortal.requestDataPush(this, questionFile, null);
 	}
 
 	protected abstract Class<?> getDistributionActivityClass();

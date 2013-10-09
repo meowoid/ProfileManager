@@ -35,7 +35,7 @@ public class RatingQuestionTable extends AbstractQuestionTable
 		{
 			ContentValues values = new ContentValues();
 			values.put(ratingValue, ""+i);
-			values.put(ratingDescription, ratingQuestion.getDescription(i-1));
+			values.put(ratingDescription, ratingQuestion.getDescriptionForRating(i));
 			values.put(ratingFrequency, 0);
 			database.insert(tableName, null, values);
 		}

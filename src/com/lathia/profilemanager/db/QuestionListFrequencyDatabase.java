@@ -12,8 +12,8 @@ import com.lathia.profilemanager.db.tables.AbstractQuestionTable;
 import com.lathia.profilemanager.db.tables.CategoricalQuestionTable;
 import com.lathia.profilemanager.db.tables.RatingQuestionTable;
 import com.lathia.profilemanager.db.tables.TimeOfDayTable;
+import com.lathia.surveymanager.data.AnswerList;
 import com.lathia.surveymanager.data.QuestionList;
-import com.lathia.surveymanager.data.SurveyResponse;
 import com.lathia.surveymanager.data.answers.AbstractAnswer;
 import com.lathia.surveymanager.data.answers.RatingAnswer;
 import com.lathia.surveymanager.data.answers.RatingListAnswer;
@@ -130,7 +130,7 @@ public class QuestionListFrequencyDatabase extends SQLiteOpenHelper
 		}
 	}
 	
-	public void addResponse(final SurveyResponse answers)
+	public void addResponse(final AnswerList answers)
 	{
 		SQLiteDatabase database = getWritableDatabase();
 		timeOfDayTable.addEntry(database);
