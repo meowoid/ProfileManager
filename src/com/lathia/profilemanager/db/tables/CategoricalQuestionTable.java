@@ -12,9 +12,9 @@ import com.lathia.surveymanager.data.questions.AbstractQuestion;
 public class CategoricalQuestionTable extends AbstractQuestionTable
 {
 	
-	public CategoricalQuestionTable(final String questionId, final AbstractQuestion question)
+	public CategoricalQuestionTable(final String tableId, final AbstractQuestion question)
 	{
-		super(questionId, question);	
+		super(tableId, question);	
 	}
 	
 	@Override

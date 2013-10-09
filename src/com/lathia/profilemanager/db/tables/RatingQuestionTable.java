@@ -10,9 +10,9 @@ import com.lathia.surveymanager.data.questions.RatingQuestion;
 public class RatingQuestionTable extends AbstractQuestionTable
 {
 	
-	public RatingQuestionTable(final SQLiteDatabase database, final String questionId, final AbstractQuestion question)
+	public RatingQuestionTable(final String tableId, final AbstractQuestion question)
 	{
-		super(questionId, question);
+		super(tableId, question);
 	}
 
 	@Override

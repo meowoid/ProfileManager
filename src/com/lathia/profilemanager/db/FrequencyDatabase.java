@@ -12,7 +12,7 @@ import com.lathia.profilemanager.db.tables.TimeOfDayTable;
 public class FrequencyDatabase extends SQLiteOpenHelper
 {
 	private final static int dbVersion = 1;
-	private final TimeOfDayTable timeOfDayTable;
+	protected final TimeOfDayTable timeOfDayTable;
 	private final FrequencyTable frequencyTable;
 	
 	public FrequencyDatabase(final Context context, final String databaseId)
@@ -54,17 +54,10 @@ public class FrequencyDatabase extends SQLiteOpenHelper
 	
 	public Distribution getDistribution()
 	{
-		if (frequencyTable != null)
-		{
-			SQLiteDatabase database = getReadableDatabase();
-			Distribution distribution = getDistribution(database, frequencyTable);
-			database.close();
-			return distribution;
-		}
-		else
-		{
-			return null;
-		}
+		SQLiteDatabase database = getReadableDatabase();
+		Distribution distribution = getDistribution(database, frequencyTable);
+		database.close();
+		return distribution;
 	}
 	
 	private Distribution getDistribution(SQLiteDatabase database, FrequencyTable table)
@@ -72,7 +65,7 @@ public class FrequencyDatabase extends SQLiteOpenHelper
 		Distribution distribution;
 		try
 		{
-			distribution = table.getFrequencyCount(database);
+			distribution = table.getDistribution(database);
 		}
 		catch (SQLiteException e)
 		{

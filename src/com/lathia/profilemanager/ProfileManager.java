@@ -6,8 +6,10 @@ import android.content.Context;
 
 import com.lathia.profilemanager.data.Distribution;
 import com.lathia.profilemanager.db.FrequencyDatabase;
+import com.lathia.profilemanager.db.QuestionListFrequencyDatabase;
 import com.lathia.surveymanager.data.AnswerList;
 import com.lathia.surveymanager.data.QuestionList;
+import com.lathia.surveymanager.data.questions.AbstractQuestion;
 
 public class ProfileManager
 {
@@ -56,6 +58,30 @@ public class ProfileManager
 	
 	public void add(final QuestionList questions, final AnswerList answers)
 	{
-		// TODO
+		String tableName = questions.getSurveyIdentifier();
+		QuestionListFrequencyDatabase database;
+		if (databaseMap.containsKey(tableName))
+		{
+			database = (QuestionListFrequencyDatabase) databaseMap.get(questions.getSurveyIdentifier());
+		}
+		else
+		{
+			database = new QuestionListFrequencyDatabase(context, questions);
+		}
+		database.addResponse(answers);
+	}
+	
+	public Distribution getDistribution(final QuestionList questions, final AbstractQuestion question)
+	{
+		String tableName = questions.getSurveyIdentifier();
+		if (databaseMap.containsKey(tableName))
+		{
+			QuestionListFrequencyDatabase database = (QuestionListFrequencyDatabase) databaseMap.get(questions.getSurveyIdentifier());
+			return database.getFrequency(question);
+		}
+		else
+		{
+			return null;
+		}
 	}
 }

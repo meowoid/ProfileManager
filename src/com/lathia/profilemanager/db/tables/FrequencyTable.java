@@ -80,7 +80,7 @@ public class FrequencyTable
 		}
 	}
 	
-	public Distribution getFrequencyCount(final SQLiteDatabase database)
+	public Distribution getDistribution(final SQLiteDatabase database)
 	{
 		Distribution result = new Distribution();
 		Cursor cursor = database.query(tableName, null, null, null, null, null, null);
