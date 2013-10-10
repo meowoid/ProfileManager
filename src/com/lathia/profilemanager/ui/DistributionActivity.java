@@ -14,7 +14,7 @@ public abstract class DistributionActivity extends AbstractProfileActivity
 	public static final String DISTRIBUTION_TITLE = "distribution_title";
 	public static final String DISTRIBUTION_DATA = "distribution_data";
 	public static final String DISTRIBUTION_VARIABLE = "distribution_variable";
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -28,7 +28,7 @@ public abstract class DistributionActivity extends AbstractProfileActivity
 		}
 		loadData(intent);
 	}
-	
+
 	protected void loadData(final Intent intent)
 	{
 		new AsyncTask<Void, Void, Distribution>()
@@ -59,7 +59,7 @@ public abstract class DistributionActivity extends AbstractProfileActivity
 				}
 				return distribution;
 			}
-			
+
 			@Override
 			protected void onPostExecute(Distribution distribution)
 			{
@@ -68,16 +68,20 @@ public abstract class DistributionActivity extends AbstractProfileActivity
 				{
 					getListView().setAdapter(getAdapter(distribution));
 				}
-				getNoDataView().setVisibility(distribution == null ? View.VISIBLE : View.GONE);
+				View noData = getNoDataView();
+				if (noData != null)
+				{
+					noData.setVisibility(distribution == null ? View.VISIBLE : View.GONE);
+				}
 				showLoadingInto(getLoadingProgressBar(), getListView(), false);
 			}
-			
+
 		}.execute();
 	}
-	
+
 	protected abstract DistributionListAdapter getAdapter(Distribution distribution);
-	
+
 	protected abstract TextView getScreenTitle();
-	
+
 	protected abstract View getNoDataView();
 }
