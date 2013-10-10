@@ -59,6 +59,7 @@ public class QuestionListFrequencyDatabase extends FrequencyDatabase
 		for (FrequencyTable table : frequencyTableMap.values())
 		{
 			table.dropTable(database);
+			table.createTable(database);
 		}
 		database.close();
 	}

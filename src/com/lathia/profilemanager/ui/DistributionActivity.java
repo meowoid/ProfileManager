@@ -37,6 +37,9 @@ public abstract class DistributionActivity extends AbstractProfileActivity
 			protected void onPreExecute()
 			{
 				super.onPreExecute();
+				System.err.println("Loading data...");
+				View noData = getNoDataView();
+				noData.setVisibility(View.GONE);
 				showLoadingInto(getLoadingProgressBar(), getListView(), true);
 			}
 
@@ -52,6 +55,7 @@ public abstract class DistributionActivity extends AbstractProfileActivity
 				{
 					ProfileManager profileManager = ProfileManager.getInstance(DistributionActivity.this);
 					String variableName = intent.getStringExtra(DISTRIBUTION_VARIABLE);
+					System.err.println("Distribution variable is: "+variableName);
 					if (variableName != null)
 					{
 						distribution = profileManager.getDistribution(variableName);

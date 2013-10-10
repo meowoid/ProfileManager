@@ -58,26 +58,28 @@ public class FrequencyTable
 	
 	private int getCurrentFrequency(final SQLiteDatabase database, final String variable)
 	{
-		Cursor cursor = database.query(tableName, new String[]{variableFrequency}, variableName+" = ? ", new String[]{variable}, null, null, null);
-		if (cursor != null)
+		try
 		{
-			int frequency;
-			if (cursor.getCount() > 0)
+			Cursor cursor = database.query(tableName, new String[]{variableFrequency}, variableName+" = ? ", new String[]{variable}, null, null, null);
+			if (cursor != null)
 			{
-				cursor.moveToFirst();
-				frequency = cursor.getInt(cursor.getColumnIndex(variableFrequency));
+				int frequency;
+				if (cursor.getCount() > 0)
+				{
+					cursor.moveToFirst();
+					frequency = cursor.getInt(cursor.getColumnIndex(variableFrequency));
+				}
+				else
+				{
+					frequency = NOT_FOUND;
+				}
+				cursor.close();
+				return frequency;
 			}
-			else
-			{
-				frequency = NOT_FOUND;
-			}
-			cursor.close();
-			return frequency;
 		}
-		else
-		{
-			return NOT_FOUND;
-		}
+		catch (Exception e)
+		{}
+		return NOT_FOUND;
 	}
 	
 	public Distribution getDistribution(final SQLiteDatabase database)

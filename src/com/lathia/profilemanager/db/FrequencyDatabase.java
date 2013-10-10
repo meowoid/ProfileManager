@@ -27,13 +27,18 @@ public class FrequencyDatabase extends SQLiteOpenHelper
 		SQLiteDatabase database = getWritableDatabase();
 		timeOfDayTable.dropTable(database);
 		frequencyTable.dropTable(database);
+		timeOfDayTable.createTable(database);
+		frequencyTable.createTable(database);
 		database.close();
 	}
 	
-	public void increment(final String variableId, final int amount)
+	public void increment(final String variableId, final int amount, final boolean incrementTime)
 	{
 		SQLiteDatabase database = getWritableDatabase();
-		timeOfDayTable.incrementNow(database, amount);
+		if (incrementTime)
+		{
+			timeOfDayTable.incrementNow(database, amount);
+		}
 		frequencyTable.incrementField(database, variableId, amount);
 		database.close();
 	}

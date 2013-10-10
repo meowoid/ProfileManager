@@ -33,27 +33,37 @@ public class ProfileManager
 		this.databaseMap = new HashMap<String, FrequencyDatabase>();
 	}
 	
-	public void add(final String groupName, final String variableName, final int value)
+	public void add(final String groupName, final String variableName, final int value, final boolean incrementTime)
 	{
 		FrequencyDatabase database = databaseMap.get(groupName);
 		if (database == null)
 		{
 			database = new FrequencyDatabase(context, groupName);
+			databaseMap.put(groupName, database);
 		}
-		database.increment(variableName, value);
+		database.increment(variableName, value, incrementTime);
 	}
 	
 	public Distribution getDistribution(final String groupName)
 	{
 		FrequencyDatabase database = databaseMap.get(groupName);
-		if (database != null)
+		if (database == null)
 		{
-			return database.getDistribution();
+			database = new FrequencyDatabase(context, groupName);
+			databaseMap.put(groupName, database);
 		}
-		else
+		return database.getDistribution();
+	}
+	
+	public void reset(final String groupName)
+	{
+		FrequencyDatabase database = databaseMap.get(groupName);
+		if (database == null)
 		{
-			return null;
+			database = new FrequencyDatabase(context, groupName);
+			databaseMap.put(groupName, database);
 		}
+		database.deleteAll();
 	}
 	
 	public void add(final QuestionList questions, final AnswerList answers)
