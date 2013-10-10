@@ -1,7 +1,9 @@
 package com.lathia.profilemanager.ui;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
 
 import com.lathia.profilemanager.ProfileManager;
@@ -18,26 +20,64 @@ public abstract class DistributionActivity extends AbstractProfileActivity
 	{
 		super.onCreate(savedInstanceState);
 		overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
-		
 		Intent intent = getIntent();
-		getScreenTitle().setText(intent.getStringExtra(DISTRIBUTION_TITLE));
-		
-		Distribution distribution = null;
-		if (intent.hasCategory(DISTRIBUTION_DATA))
+		String title = intent.getStringExtra(DISTRIBUTION_TITLE);
+		if (title != null)
 		{
-			distribution = intent.getParcelableExtra(DISTRIBUTION_DATA);
+			getScreenTitle().setText(title);
 		}
-		else
+		loadData(intent);
+	}
+	
+	protected void loadData(final Intent intent)
+	{
+		new AsyncTask<Void, Void, Distribution>()
 		{
-			ProfileManager profileManager = ProfileManager.getInstance(this);
-			String variableName = intent.getStringExtra(DISTRIBUTION_VARIABLE);
-			distribution = profileManager.getDistribution(variableName);
-		}
-		getListView().setAdapter(getAdapter(distribution));
-		showLoadingInto(getLoadingProgressBar(), getListView(), false);
+			@Override
+			protected void onPreExecute()
+			{
+				super.onPreExecute();
+				showLoadingInto(getLoadingProgressBar(), getListView(), true);
+			}
+
+			@Override
+			protected Distribution doInBackground(Void... params)
+			{
+				Distribution distribution = null;
+				if (intent.hasCategory(DISTRIBUTION_DATA))
+				{
+					distribution = intent.getParcelableExtra(DISTRIBUTION_DATA);
+				}
+				else
+				{
+					ProfileManager profileManager = ProfileManager.getInstance(DistributionActivity.this);
+					String variableName = intent.getStringExtra(DISTRIBUTION_VARIABLE);
+					if (variableName != null)
+					{
+						distribution = profileManager.getDistribution(variableName);
+					}
+				}
+				return distribution;
+			}
+			
+			@Override
+			protected void onPostExecute(Distribution distribution)
+			{
+				super.onPostExecute(distribution);
+				if (distribution != null)
+				{
+					getListView().setAdapter(getAdapter(distribution));
+				}
+				getNoDataView().setVisibility(distribution == null ? View.VISIBLE : View.GONE);
+				showLoadingInto(getLoadingProgressBar(), getListView(), false);
+			}
+			
+		}.execute();
 	}
 	
 	protected abstract DistributionListAdapter getAdapter(Distribution distribution);
 	
 	protected abstract TextView getScreenTitle();
+	
+	protected abstract View getNoDataView();
 }
