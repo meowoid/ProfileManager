@@ -32,8 +32,8 @@ public abstract class SurveyProfileHomeActivity extends AbstractProfileActivity
 	{
 		super.onCreate(savedInstanceState);
 		String questionFile = getIntent().getStringExtra(SURVEY_FILE_NAME);
-		SurveyDataPortal dataPortal = new SurveyDataPortal();
-		dataPortal.requestDataPush(this, questionFile, null);
+		SurveyDataPortal dataPortal = new SurveyDataPortal(this, null, questionFile);
+		dataPortal.requestDataPush();
 	}
 
 	protected abstract Class<?> getDistributionActivityClass();
