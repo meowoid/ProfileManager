@@ -2,6 +2,7 @@ package com.lathia.profilemanager.ui;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 
@@ -10,13 +11,25 @@ import com.lathia.surveymanager.ui.AbstractActivity;
 import com.lathia.surveymanager.ui.SurveyReceiver;
 
 public abstract class AbstractProfileActivity extends AbstractActivity implements SurveyReceiver
-{	
+{
 	protected abstract int getLayoutId();
-	
+
 	protected abstract ListView getListView();
-	
+
 	protected abstract ProgressBar getLoadingProgressBar();
-	
+
+	protected void showLoadingInto(View bar, View view, boolean loading)
+	{
+		if (bar != null)
+		{
+			bar.setVisibility(loading ? View.VISIBLE : View.GONE);
+		}
+		if (view != null)
+		{
+			view.setVisibility(loading ? View.INVISIBLE : View.VISIBLE);
+		}
+	}
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -30,13 +43,13 @@ public abstract class AbstractProfileActivity extends AbstractActivity implement
 	{
 		return this;
 	}
-	
+
 	@Override
 	public void onQuestionListReceived(QuestionList data)
 	{
 		showLoadingInto(getLoadingProgressBar(), getListView(), false);
 	}
-	
+
 	@Override
 	public void onQuestionListErrorReceived(String errorString)
 	{

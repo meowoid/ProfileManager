@@ -32,7 +32,7 @@ public class CategoricalQuestionTable extends AbstractQuestionTable
 	@Override
 	public void addEntry(final SQLiteDatabase database, final AbstractAnswer answer)
 	{
-		ArrayList<String> selected_categories = ((StringListAnswer) answer).getAnswer();
+		String[] selected_categories = ((StringListAnswer) answer).getAnswer();
 		for (String selected_category : selected_categories)
 		{
 			incrementField(database, selected_category, 1);
