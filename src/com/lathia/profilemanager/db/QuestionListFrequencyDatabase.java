@@ -7,9 +7,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 
 import com.lathia.profilemanager.data.Distribution;
-import com.lathia.profilemanager.db.tables.CategoricalQuestionTable;
-import com.lathia.profilemanager.db.tables.FrequencyTable;
-import com.lathia.profilemanager.db.tables.RatingQuestionTable;
+import com.lathia.profilemanager.db.tables.distribution.CategoricalQuestionTable;
+import com.lathia.profilemanager.db.tables.distribution.FrequencyTable;
+import com.lathia.profilemanager.db.tables.distribution.RatingQuestionTable;
 import com.lathia.surveymanager.data.AnswerList;
 import com.lathia.surveymanager.data.QuestionList;
 import com.lathia.surveymanager.data.answers.AbstractAnswer;
@@ -58,8 +58,7 @@ public class QuestionListFrequencyDatabase extends FrequencyDatabase
 		SQLiteDatabase database = getWritableDatabase();
 		for (FrequencyTable table : frequencyTableMap.values())
 		{
-			table.dropTable(database);
-			table.createTable(database);
+			reset(table, database);
 		}
 		database.close();
 	}

@@ -1,6 +1,7 @@
-package com.lathia.profilemanager.db.tables;
+package com.lathia.profilemanager.db.tables.distribution;
 
 import java.util.Calendar;
+
 
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;

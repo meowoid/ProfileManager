@@ -8,12 +8,12 @@ import com.lathia.profilemanager.data.Distribution;
 import com.lathia.profilemanager.db.tables.distribution.FrequencyTable;
 import com.lathia.profilemanager.db.tables.distribution.TimeOfDayTable;
 
-public class FrequencyDatabase extends AbstractProfileDatabase
+public class EventMapDatabase extends AbstractProfileDatabase
 {
 	protected final TimeOfDayTable timeOfDayTable;
 	private final FrequencyTable frequencyTable;
 	
-	public FrequencyDatabase(final Context context, final String databaseId)
+	public EventMapDatabase(final Context context, final String databaseId)
 	{
 		super(context, databaseId);
 		timeOfDayTable = new TimeOfDayTable(databaseId);

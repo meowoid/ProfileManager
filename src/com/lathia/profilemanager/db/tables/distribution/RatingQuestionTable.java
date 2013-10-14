@@ -1,4 +1,4 @@
-package com.lathia.profilemanager.db.tables;
+package com.lathia.profilemanager.db.tables.distribution;
 
 import android.database.sqlite.SQLiteDatabase;
 

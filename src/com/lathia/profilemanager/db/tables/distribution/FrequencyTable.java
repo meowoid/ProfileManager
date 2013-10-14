@@ -1,24 +1,24 @@
-package com.lathia.profilemanager.db.tables;
+package com.lathia.profilemanager.db.tables.distribution;
 
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.lathia.profilemanager.data.Distribution;
+import com.lathia.profilemanager.db.tables.AbstractTable;
 
-public class FrequencyTable
+public class FrequencyTable extends AbstractTable
 {
 	protected final static String variableName = "variableName";
 	protected final static String variableFrequency = "variableFrequency";
 	protected final static int NOT_FOUND = -1;
 	
-	protected final String tableName;
-	
 	public FrequencyTable(final String tableName)
 	{
-		this.tableName = tableName;
+		super(tableName);
 	}
 	
+	@Override
 	public void createTable(final SQLiteDatabase database)
 	{
 		database.execSQL("CREATE TABLE IF NOT EXISTS " + tableName
@@ -26,17 +26,6 @@ public class FrequencyTable
 				+ variableName + " TEXT NOT NULL, "
 				+ variableFrequency + " INTEGER DEFAULT 0"
 				+ ");");
-	}
-	
-	public void dropTable(final SQLiteDatabase database)
-	{
-		database.execSQL("DROP TABLE IF EXISTS " + tableName);
-	}
-	
-	public void upgradeTable(final SQLiteDatabase database)
-	{
-		dropTable(database);
-		createTable(database);
 	}
 	
 	public void incrementField(final SQLiteDatabase database, final String variable, final int amount)

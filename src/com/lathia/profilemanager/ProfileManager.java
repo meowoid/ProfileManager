@@ -1,6 +1,7 @@
 package com.lathia.profilemanager;
 
 import java.util.HashMap;
+import java.util.List;
 
 import android.content.Context;
 
@@ -32,6 +33,10 @@ public class ProfileManager
 		this.context = context;
 		this.databaseMap = new HashMap<String, FrequencyDatabase>();
 	}
+	
+	/*
+	 * Feedback based on (Group Name, Variable Name)
+	 */
 	
 	public void add(final String groupName, final String variableName, final int value, final boolean incrementTime)
 	{
@@ -66,6 +71,10 @@ public class ProfileManager
 		database.deleteAll();
 	}
 	
+	/*
+	 * Based on a QuestionList
+	 */
+	
 	public void add(final QuestionList questions, final AnswerList answers)
 	{
 		String tableName = questions.getSurveyIdentifier();
@@ -94,4 +103,40 @@ public class ProfileManager
 			return null;
 		}
 	}
+	
+	public void reset(final QuestionList questions)
+	{
+		reset(questions.getSurveyIdentifier());
+	}
+	
+	/*
+	 * Feedback based on (Group Name, HashMap<Variable, Value>)
+	 */
+	
+	public void add(final String groupName, final HashMap<String, String> variableMap)
+	{
+		FrequencyDatabase database = databaseMap.get(groupName);
+		if (database == null)
+		{
+			database = new FrequencyDatabase(context, groupName);
+			databaseMap.put(groupName, database);
+		}
+//		database.increment(variableName, value, incrementTime);
+	}
+	
+	public List<HashMap<String, String>> getRecent(final String groupName)
+	{
+		return null; // TODO
+	}
+	
+//	public Distribution getDistribution(final String groupName)
+//	{
+//		FrequencyDatabase database = databaseMap.get(groupName);
+//		if (database == null)
+//		{
+//			database = new FrequencyDatabase(context, groupName);
+//			databaseMap.put(groupName, database);
+//		}
+//		return database.getDistribution();
+//	}
 }
