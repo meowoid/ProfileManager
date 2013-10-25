@@ -1,4 +1,4 @@
-package com.lathia.profilemanager.ui;
+package com.lathia.profilemanager.ui.distribution;
 
 import java.text.DecimalFormat;
 

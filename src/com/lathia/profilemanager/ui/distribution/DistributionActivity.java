@@ -1,4 +1,4 @@
-package com.lathia.profilemanager.ui;
+package com.lathia.profilemanager.ui.distribution;
 
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -8,12 +8,11 @@ import android.widget.TextView;
 
 import com.lathia.profilemanager.ProfileManager;
 import com.lathia.profilemanager.data.Distribution;
+import com.lathia.profilemanager.ui.AbstractProfileActivity;
 
 public abstract class DistributionActivity extends AbstractProfileActivity
 {
-	public static final String DISTRIBUTION_TITLE = "distribution_title";
 	public static final String DISTRIBUTION_DATA = "distribution_data";
-	public static final String DISTRIBUTION_VARIABLE = "distribution_variable";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -21,12 +20,26 @@ public abstract class DistributionActivity extends AbstractProfileActivity
 		super.onCreate(savedInstanceState);
 		overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
 		Intent intent = getIntent();
-		String title = intent.getStringExtra(DISTRIBUTION_TITLE);
+		String title = getDistributionTitle();
 		if (title != null)
 		{
 			getScreenTitle().setText(title);
 		}
 		loadData(intent);
+	}
+	
+	protected abstract String getDistributionTitle();
+	
+	protected abstract String getDistributionVariableName();
+	
+	protected Distribution getDistribution()
+	{
+		Intent intent = getIntent();
+		if (intent.hasCategory(DISTRIBUTION_DATA))
+		{
+			return intent.getParcelableExtra(DISTRIBUTION_DATA);
+		}
+		return null;
 	}
 
 	protected void loadData(final Intent intent)
@@ -38,22 +51,21 @@ public abstract class DistributionActivity extends AbstractProfileActivity
 			{
 				super.onPreExecute();
 				View noData = getNoDataView();
-				noData.setVisibility(View.GONE);
+				if (noData != null)
+				{
+					noData.setVisibility(View.GONE);
+				}
 				showLoadingInto(getLoadingProgressBar(), getListView(), true);
 			}
 
 			@Override
 			protected Distribution doInBackground(Void... params)
 			{
-				Distribution distribution = null;
-				if (intent.hasCategory(DISTRIBUTION_DATA))
-				{
-					distribution = intent.getParcelableExtra(DISTRIBUTION_DATA);
-				}
-				else
+				Distribution distribution = getDistribution();
+				if (distribution == null)
 				{
 					ProfileManager profileManager = ProfileManager.getInstance(DistributionActivity.this);
-					String variableName = intent.getStringExtra(DISTRIBUTION_VARIABLE);
+					String variableName = getDistributionVariableName();
 					if (variableName != null)
 					{
 						distribution = profileManager.getDistribution(variableName);

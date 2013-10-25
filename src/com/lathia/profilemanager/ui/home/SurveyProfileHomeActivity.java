@@ -1,46 +1,37 @@
-package com.lathia.profilemanager.ui;
+package com.lathia.profilemanager.ui.home;
 
 import java.util.ArrayList;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import com.lathia.profilemanager.data.Distribution;
 import com.lathia.profilemanager.db.QuestionListFrequencyDatabase;
+import com.lathia.profilemanager.ui.distribution.DistributionActivity;
 import com.lathia.surveymanager.control.SurveyDataPortal;
 import com.lathia.surveymanager.data.QuestionList;
 import com.lathia.surveymanager.data.questions.AbstractQuestion;
 import com.lathia.surveymanager.data.questions.RatingList;
 import com.lathia.surveymanager.data.questions.RatingQuestion;
 
-public abstract class SurveyProfileHomeActivity extends AbstractProfileActivity
+public abstract class SurveyProfileHomeActivity extends AbstractProfileHomeActivity
 {
 	public final static String SURVEY_FILE_NAME = "surveyFileName";
 	private final static String TIMES_OF_DAY = "Times of Day";
 	
-	private ProfileListAdapter adapter;
 	private QuestionList questionList;
 	private QuestionListFrequencyDatabase database;
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState)
+	protected void loadData()
 	{
-		super.onCreate(savedInstanceState);
 		String questionFile = getIntent().getStringExtra(SURVEY_FILE_NAME);
 		SurveyDataPortal dataPortal = new SurveyDataPortal(this, null, questionFile);
 		dataPortal.requestDataPush();
 	}
-
-	protected abstract Class<?> getDistributionActivityClass();
-	
-	protected abstract String getNoDataMessage();
-	
-	protected abstract ProfileListAdapter getAdapter(ArrayList<String> entryTitles);
 
 	@Override
 	public void onQuestionListReceived(QuestionList data)
@@ -50,10 +41,8 @@ public abstract class SurveyProfileHomeActivity extends AbstractProfileActivity
 		questionList = (QuestionList) data;
 		database = new QuestionListFrequencyDatabase(this, questionList);
 		
-		ListView list = getListView();
-		adapter = getAdapter(getEntryTitles());
-		list.setAdapter(adapter);
-		list.setOnItemClickListener(new OnItemClickListener()
+		final ProfileListAdapter adapter = getAdapter(getEntryTitles());
+		showList(adapter, new OnItemClickListener()
 		{
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3)
@@ -73,7 +62,6 @@ public abstract class SurveyProfileHomeActivity extends AbstractProfileActivity
 				if (distribution != null && distribution.hasData())
 				{
 					Intent intent = new Intent(SurveyProfileHomeActivity.this, getDistributionActivityClass());
-					intent.putExtra(DistributionActivity.DISTRIBUTION_TITLE, adapter.getItem(position));
 					intent.putExtra(DistributionActivity.DISTRIBUTION_DATA, distribution);
 					startActivity(intent);
 				}
