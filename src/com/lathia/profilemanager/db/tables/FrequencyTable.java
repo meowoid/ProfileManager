@@ -1,11 +1,10 @@
-package com.lathia.profilemanager.db.tables.distribution;
+package com.lathia.profilemanager.db.tables;
 
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.lathia.profilemanager.data.Distribution;
-import com.lathia.profilemanager.db.tables.AbstractTable;
 
 public class FrequencyTable extends AbstractTable
 {
@@ -73,10 +72,10 @@ public class FrequencyTable extends AbstractTable
 	
 	public Distribution getDistribution(final SQLiteDatabase database)
 	{
-		Distribution result = new Distribution();
 		Cursor cursor = database.query(tableName, null, null, null, null, null, null);
 		if (cursor != null)
 		{
+			Distribution result = new Distribution();
 			int variableNameIndex = cursor.getColumnIndex(variableName);
 			int variableValueIndex = cursor.getColumnIndex(variableFrequency);
 			cursor.moveToFirst();
@@ -88,7 +87,11 @@ public class FrequencyTable extends AbstractTable
 				cursor.moveToNext();
 			}
 			cursor.close();
+			if (!result.isEmpty())
+			{
+				return result;
+			}
 		}
-		return result;
+		return null;
 	}
 }

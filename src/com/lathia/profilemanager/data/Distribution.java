@@ -33,6 +33,11 @@ public class Distribution implements Parcelable
 		}
 	}
 	
+	public boolean isEmpty()
+	{
+		return values.keySet().isEmpty();
+	}
+	
 	public ArrayList<String> getKeys()
 	{
 		ArrayList<String> keys = new ArrayList<String>();

@@ -96,11 +96,17 @@ public abstract class DistributionActivity extends AbstractProfileActivity
 					{
 						listView.setAdapter(getAdapter(distribution));
 					}
-					noData.setVisibility(View.GONE);
+					if (noData != null)
+					{
+						noData.setVisibility(View.GONE);
+					}
 				}
 				else
 				{
-					noData.setVisibility(View.VISIBLE);
+					if (noData != null)
+					{
+						noData.setVisibility(View.VISIBLE);
+					}
 					onNoDataAvailable();
 				}
 				showLoadingInto(getLoadingProgressBar(), getListView(), false);

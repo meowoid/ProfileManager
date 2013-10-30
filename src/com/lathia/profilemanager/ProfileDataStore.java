@@ -67,10 +67,12 @@ public class ProfileDataStore
 		FrequencyDatabase database = databaseMap.get(groupName);
 		if (database == null)
 		{
-			database = new FrequencyDatabase(context, groupName);
-			databaseMap.put(groupName, database);
+			return null;
 		}
-		return database.getDistribution();
+		else
+		{
+			return database.getDistribution();
+		}
 	}
 
 	public void remove(final String groupName)
