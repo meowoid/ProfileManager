@@ -6,11 +6,7 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 
-import com.lathia.surveymanager.data.QuestionList;
-import com.lathia.surveymanager.ui.AbstractActivity;
-import com.lathia.surveymanager.ui.SurveyReceiver;
-
-public abstract class AbstractProfileActivity extends AbstractActivity implements SurveyReceiver
+public abstract class AbstractProfileActivity extends Activity
 {
 	protected abstract int getLayoutId();
 
@@ -36,24 +32,5 @@ public abstract class AbstractProfileActivity extends AbstractActivity implement
 		super.onCreate(savedInstanceState);
 		setContentView(getLayoutId());
 		showLoadingInto(getLoadingProgressBar(), getListView(), true);
-	}
-
-	@Override
-	public Activity getActivity()
-	{
-		return this;
-	}
-
-	@Override
-	public void onQuestionListReceived(QuestionList data)
-	{
-		showLoadingInto(getLoadingProgressBar(), getListView(), false);
-	}
-
-	@Override
-	public void onQuestionListErrorReceived(String errorString)
-	{
-		showLoadingInto(getLoadingProgressBar(), getListView(), false);
-		finish();
 	}
 }

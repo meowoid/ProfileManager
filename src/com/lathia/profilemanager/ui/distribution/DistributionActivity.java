@@ -4,14 +4,15 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ListView;
 import android.widget.TextView;
 
+import com.lathia.profilemanager.ProfileDataStore;
 import com.lathia.profilemanager.data.Distribution;
 import com.lathia.profilemanager.ui.AbstractProfileActivity;
 
 public abstract class DistributionActivity extends AbstractProfileActivity
 {
-	public static final String DISTRIBUTION_DATA = "distribution_data";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -22,26 +23,30 @@ public abstract class DistributionActivity extends AbstractProfileActivity
 		String title = getDistributionTitle();
 		if (title != null)
 		{
-			getScreenTitle().setText(title);
+			TextView textView = getScreenTitle();
+			if (textView != null)
+			{
+				textView.setText(title);
+			}
 		}
 		loadData(intent);
 	}
-	
+
 	protected abstract String getDistributionTitle();
-	
+
 	protected abstract String getDistributionVariableName();
-	
+
 	protected abstract String getIntentKeyForDistributionData();
-	
+
 	protected Distribution getDistribution()
 	{
 		String intentKey = getIntentKeyForDistributionData();
 		if (intentKey != null)
 		{
 			Intent intent = getIntent();
-			if (intent.hasCategory(DISTRIBUTION_DATA))
+			if (intent.hasCategory(intentKey))
 			{
-				return intent.getParcelableExtra(DISTRIBUTION_DATA);
+				return intent.getParcelableExtra(intentKey);
 			}
 		}
 		return null;
@@ -67,15 +72,15 @@ public abstract class DistributionActivity extends AbstractProfileActivity
 			protected Distribution doInBackground(Void... params)
 			{
 				Distribution distribution = getDistribution();
-//				if (distribution == null)
-//				{
-//					ProfileDataStore profileManager = ProfileDataStore.getInstance(DistributionActivity.this);
-//					String variableName = getDistributionVariableName();
-//					if (variableName != null)
-//					{
-//						distribution = profileManager.getDistribution(variableName);
-//					}
-//				}
+				if (distribution == null)
+				{
+					ProfileDataStore profileManager = ProfileDataStore.getInstance(DistributionActivity.this);
+					String variableName = getDistributionVariableName();
+					if (variableName != null)
+					{
+						distribution = profileManager.getDistribution(variableName);
+					}
+				}
 				return distribution;
 			}
 
@@ -85,7 +90,11 @@ public abstract class DistributionActivity extends AbstractProfileActivity
 				super.onPostExecute(distribution);
 				if (distribution != null)
 				{
-					getListView().setAdapter(getAdapter(distribution));
+					ListView listView = getListView();
+					if (listView != null)
+					{
+						listView.setAdapter(getAdapter(distribution));
+					}
 				}
 				View noData = getNoDataView();
 				if (noData != null)
@@ -94,7 +103,6 @@ public abstract class DistributionActivity extends AbstractProfileActivity
 				}
 				showLoadingInto(getLoadingProgressBar(), getListView(), false);
 			}
-
 		}.execute();
 	}
 
