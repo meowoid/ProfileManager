@@ -1,4 +1,4 @@
-package com.lathia.profilemanager.db.tables.sequence;
+package com.lathia.profilemanager.db.tables;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,7 +12,6 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.lathia.profilemanager.db.tables.AbstractTable;
 
 public class EventMapTable extends AbstractTable
 {

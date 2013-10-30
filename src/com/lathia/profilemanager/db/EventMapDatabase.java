@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteException;
 
 import com.lathia.profilemanager.data.Distribution;
 import com.lathia.profilemanager.db.tables.FrequencyTable;
-import com.lathia.profilemanager.db.tables.distribution.TimeOfDayTable;
+import com.lathia.profilemanager.unused.db.tables.distribution.TimeOfDayTable;
 
 public class EventMapDatabase extends AbstractProfileDatabase
 {

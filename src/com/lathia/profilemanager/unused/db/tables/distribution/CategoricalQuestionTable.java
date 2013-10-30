@@ -1,4 +1,4 @@
-package com.lathia.profilemanager.db.tables.distribution;
+package com.lathia.profilemanager.unused.db.tables.distribution;
 
 
 public class CategoricalQuestionTable extends AbstractQuestionTable

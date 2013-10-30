@@ -1,4 +1,4 @@
-package com.lathia.profilemanager.ui.home;
+package com.lathia.profilemanager.unused.ui.home;
 
 
 public abstract class StoredProfileHomeActivity extends AbstractProfileHomeActivity
