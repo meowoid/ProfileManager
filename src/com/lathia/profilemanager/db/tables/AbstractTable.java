@@ -8,7 +8,7 @@ public abstract class AbstractTable
 	
 	public AbstractTable(final String tableName)
 	{
-		this.tableName = tableName;
+		this.tableName = tableName.replaceAll(" ", "_");
 	}
 	
 	public abstract void createTable(final SQLiteDatabase database);

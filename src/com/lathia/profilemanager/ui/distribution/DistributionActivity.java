@@ -88,6 +88,7 @@ public abstract class DistributionActivity extends AbstractProfileActivity
 			protected void onPostExecute(Distribution distribution)
 			{
 				super.onPostExecute(distribution);
+				View noData = getNoDataView();
 				if (distribution != null)
 				{
 					ListView listView = getListView();
@@ -95,16 +96,19 @@ public abstract class DistributionActivity extends AbstractProfileActivity
 					{
 						listView.setAdapter(getAdapter(distribution));
 					}
+					noData.setVisibility(View.GONE);
 				}
-				View noData = getNoDataView();
-				if (noData != null)
+				else
 				{
-					noData.setVisibility(distribution == null ? View.VISIBLE : View.GONE);
+					noData.setVisibility(View.VISIBLE);
+					onNoDataAvailable();
 				}
 				showLoadingInto(getLoadingProgressBar(), getListView(), false);
 			}
 		}.execute();
 	}
+	
+	protected abstract void onNoDataAvailable();
 
 	protected abstract DistributionListAdapter getAdapter(Distribution distribution);
 
