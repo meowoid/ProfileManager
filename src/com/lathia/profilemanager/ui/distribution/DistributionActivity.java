@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
-import com.lathia.profilemanager.ProfileManager;
 import com.lathia.profilemanager.data.Distribution;
 import com.lathia.profilemanager.ui.AbstractProfileActivity;
 
@@ -32,12 +31,18 @@ public abstract class DistributionActivity extends AbstractProfileActivity
 	
 	protected abstract String getDistributionVariableName();
 	
+	protected abstract String getIntentKeyForDistributionData();
+	
 	protected Distribution getDistribution()
 	{
-		Intent intent = getIntent();
-		if (intent.hasCategory(DISTRIBUTION_DATA))
+		String intentKey = getIntentKeyForDistributionData();
+		if (intentKey != null)
 		{
-			return intent.getParcelableExtra(DISTRIBUTION_DATA);
+			Intent intent = getIntent();
+			if (intent.hasCategory(DISTRIBUTION_DATA))
+			{
+				return intent.getParcelableExtra(DISTRIBUTION_DATA);
+			}
 		}
 		return null;
 	}
@@ -62,15 +67,15 @@ public abstract class DistributionActivity extends AbstractProfileActivity
 			protected Distribution doInBackground(Void... params)
 			{
 				Distribution distribution = getDistribution();
-				if (distribution == null)
-				{
-					ProfileManager profileManager = ProfileManager.getInstance(DistributionActivity.this);
-					String variableName = getDistributionVariableName();
-					if (variableName != null)
-					{
-						distribution = profileManager.getDistribution(variableName);
-					}
-				}
+//				if (distribution == null)
+//				{
+//					ProfileDataStore profileManager = ProfileDataStore.getInstance(DistributionActivity.this);
+//					String variableName = getDistributionVariableName();
+//					if (variableName != null)
+//					{
+//						distribution = profileManager.getDistribution(variableName);
+//					}
+//				}
 				return distribution;
 			}
 

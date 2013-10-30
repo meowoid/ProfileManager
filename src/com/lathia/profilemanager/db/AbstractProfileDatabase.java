@@ -4,7 +4,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.lathia.profilemanager.db.tables.distribution.FrequencyTable;
+import com.lathia.profilemanager.db.tables.AbstractTable;
 
 public abstract class AbstractProfileDatabase extends SQLiteOpenHelper
 {
@@ -15,7 +15,7 @@ public abstract class AbstractProfileDatabase extends SQLiteOpenHelper
 		super(context, databaseId, null, dbVersion);
 	}
 	
-	protected void reset(final FrequencyTable table, final SQLiteDatabase database)
+	protected void reset(final AbstractTable table, final SQLiteDatabase database)
 	{
 		table.dropTable(database);
 		table.createTable(database);
