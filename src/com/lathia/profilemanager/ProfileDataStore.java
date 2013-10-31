@@ -1,6 +1,7 @@
 package com.lathia.profilemanager;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Random;
 
 import android.content.Context;
@@ -8,7 +9,6 @@ import android.content.Context;
 import com.lathia.profilemanager.data.Distribution;
 import com.lathia.profilemanager.db.EventDatabase;
 import com.lathia.profilemanager.db.FrequencyDatabase;
-import com.lathia.profilemanager.db.VariableDatabase;
 
 public class ProfileDataStore
 {
@@ -26,17 +26,14 @@ public class ProfileDataStore
 	}
 
 	protected final Context context;
-	protected final HashMap<String, FrequencyDatabase> distributionMap;
-	protected final HashMap<String, EventDatabase> eventMap;
-	protected final VariableDatabase distributionDB, eventDB;
+	protected final TableMap<FrequencyDatabase> distributionMap;
+	protected final TableMap<EventDatabase> eventMap;
 
 	public ProfileDataStore(final Context context)
 	{
 		this.context = context;
-		this.distributionMap = new HashMap<String, FrequencyDatabase>();
-		this.eventMap = new HashMap<String, EventDatabase>();
-		this.distributionDB = new VariableDatabase(context, DISTRIBUTIONS);
-		this.eventDB = new VariableDatabase(context, EVENTS);
+		this.distributionMap = new TableMap<FrequencyDatabase>(context, DISTRIBUTIONS);
+		this.eventMap = new TableMap<EventDatabase>(context, EVENTS);
 	}
 
 	/*
@@ -45,59 +42,80 @@ public class ProfileDataStore
 
 	public String[] getDistributionVariables()
 	{
-		return distributionDB.getVariables();
+		return distributionMap.getVariables();
 	}
 	
 	public String[] getEventVariables()
 	{
-		return eventDB.getVariables();
+		return eventMap.getVariables();
 	}
 
 	/*
-	 * Feedback based on (Group Name, Variable Name)
+	 * Distribution Feedback based on (Group Name, Variable Name)
 	 */
+	
+	private FrequencyDatabase getFrequencyDatabase(final String tableName)
+	{
+		FrequencyDatabase database = distributionMap.get(tableName);
+		if (database == null)
+		{
+			database = new FrequencyDatabase(context, tableName);
+			distributionMap.put(tableName, database);
+		}
+		return database;
+	}
 
 	public void addToDistribution(final String groupName, final String variableName, final int value)
 	{
-		FrequencyDatabase database = distributionMap.get(groupName);
-		if (database == null)
-		{
-			database = new FrequencyDatabase(context, groupName);
-			distributionMap.put(groupName, database);
-		}
+		FrequencyDatabase database = getFrequencyDatabase(groupName);
 		database.increment(variableName, value);
-		distributionDB.addVariable(groupName);
+	}
+	
+	public void removeDistributionTable(final String groupName)
+	{
+		distributionMap.remove(groupName);
 	}
 
 	public Distribution getDistribution(final String groupName)
 	{
-		FrequencyDatabase database = distributionMap.get(groupName);
-		if (database == null)
-		{
-			Random random = new Random();
-			Distribution distribution = new Distribution();
-			for (int i=0; i<10; i++)
-			{ // TODO remove
-				distribution.put("Test Value "+i, random.nextInt(20));
-			}
-			return distribution;
-//			return null;
+		Random random = new Random();
+		Distribution distribution = new Distribution();
+		for (int i=0; i<10; i++)
+		{ // TODO remove
+			distribution.put("Test Value "+i, random.nextInt(20));
 		}
-		else
-		{
-			return database.getDistribution();
-		}
+		return distribution;
 	}
 
-	public void remove(final String groupName)
+	/*
+	 * Events
+	 */
+	
+	private EventDatabase getEventDatabase(final String tableName)
 	{
-		FrequencyDatabase database = distributionMap.get(groupName);
+		EventDatabase database = eventMap.get(tableName);
 		if (database == null)
 		{
-			database = new FrequencyDatabase(context, groupName);
-			distributionMap.put(groupName, database);
+			database = new EventDatabase(context, tableName);
+			eventMap.put(tableName, database);
 		}
-		database.deleteAll();
-		distributionDB.removeVariable(groupName);
+		return database;
+	}
+	
+	public void addEvent(final String groupName, final long entryTimeInMillis, final HashMap<String, String> event)
+	{
+		EventDatabase database = getEventDatabase(groupName);
+		database.add(entryTimeInMillis, event);
+	}
+	
+	public void removeEventTable(final String groupName)
+	{
+		eventMap.remove(groupName);
+	}
+	
+	public List<HashMap<String, String>> getEvents(final String groupName, final int daysInPast)
+	{
+		EventDatabase database = getEventDatabase(groupName);
+		return database.getEvents(daysInPast);
 	}
 }
