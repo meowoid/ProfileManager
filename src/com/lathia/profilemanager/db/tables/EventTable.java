@@ -12,13 +12,12 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-
-public class EventMapTable extends AbstractTable
+public class EventTable extends AbstractTable
 {
 	protected final static String timeStamp = "timeStamp";
 	protected final static String variableMap = "variableMap";
 	
-	public EventMapTable(final String tableName)
+	public EventTable(final String tableName)
 	{
 		super(tableName);
 	}
@@ -33,20 +32,10 @@ public class EventMapTable extends AbstractTable
 				+ ");");
 	}
 	
-	public void add(final SQLiteDatabase database, final HashMap<String, String> values)
-	{
-		add(database, System.currentTimeMillis(), values);
-	}
-	
 	public void add(final SQLiteDatabase database, final long entryTime, final HashMap<String, String> values)
 	{
 		JSONObject data = toJSON(values);
 		add(database, entryTime, data);
-	}
-	
-	public void add(final SQLiteDatabase database, final JSONObject data)
-	{
-		add(database, System.currentTimeMillis(), data);
 	}
 	
 	public void add(final SQLiteDatabase database, final long entryTime, final JSONObject data)

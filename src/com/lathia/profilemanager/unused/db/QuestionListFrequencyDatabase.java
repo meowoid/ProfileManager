@@ -1,4 +1,4 @@
-package com.lathia.profilemanager.db;
+package com.lathia.profilemanager.unused.db;
 
 
 public class QuestionListFrequencyDatabase// extends FrequencyDatabase

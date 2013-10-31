@@ -1,24 +1,23 @@
-package com.lathia.profilemanager;
+package com.lathia.profilemanager.unused;
 
-import android.content.Context;
 
-public class SurveyAnswerDataStore extends ProfileDataStore
+public class SurveyAnswerDataStore// extends ProfileDataStore
 {
-	private static SurveyAnswerDataStore instance;
-	
-	public static SurveyAnswerDataStore getInstance(Context context)
-	{
-		if (instance == null)
-		{
-			instance = new SurveyAnswerDataStore(context);
-		}
-		return instance;
-	}
-
-	private SurveyAnswerDataStore(Context context)
-	{
-		super(context);
-	}
+//	private static SurveyAnswerDataStore instance;
+//	
+//	public static SurveyAnswerDataStore getInstance(Context context)
+//	{
+//		if (instance == null)
+//		{
+//			instance = new SurveyAnswerDataStore(context);
+//		}
+//		return instance;
+//	}
+//
+//	private SurveyAnswerDataStore(Context context)
+//	{
+//		super(context);
+//	}
 	
 //	public void add(final QuestionList questions, final AnswerList answers)
 //	{

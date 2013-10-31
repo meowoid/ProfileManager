@@ -10,9 +10,9 @@ public class VariableDatabase extends AbstractProfileDatabase
 	private final static String databaseId = "com.lathia.profilemanager.db.VARIABLE_DB";
 	private final StringListTable variableListTable;
 	
-	public VariableDatabase(final Context context)
+	public VariableDatabase(final Context context, final String name)
 	{
-		super(context, databaseId);
+		super(context, databaseId+"."+name);
 		variableListTable = new StringListTable(databaseId);
 	}
 	
