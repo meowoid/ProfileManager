@@ -2,7 +2,6 @@ package com.lathia.profilemanager;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Random;
 
 import android.content.Context;
 
@@ -78,13 +77,8 @@ public class ProfileDataStore
 
 	public Distribution getDistribution(final String groupName)
 	{
-		Random random = new Random();
-		Distribution distribution = new Distribution();
-		for (int i=0; i<10; i++)
-		{ // TODO remove
-			distribution.put("Test Value "+i, random.nextInt(20));
-		}
-		return distribution;
+		FrequencyDatabase database = getFrequencyDatabase(groupName);
+		return database.getDistribution();
 	}
 
 	/*
