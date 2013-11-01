@@ -43,4 +43,9 @@ public class TableMap <T extends AbstractProfileDatabase>
 		}
 		variableNameDB.removeVariable(tableName);
 	}
+	
+	public boolean containsVariable(final String variableName)
+	{
+		return variableNameDB.variableExists(variableName);
+	}
 }

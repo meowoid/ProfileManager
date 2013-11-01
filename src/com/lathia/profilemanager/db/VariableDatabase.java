@@ -7,12 +7,12 @@ import com.lathia.profilemanager.db.tables.StringListTable;
 
 public class VariableDatabase extends AbstractProfileDatabase
 {
-	private final static String databaseId = "com.lathia.profilemanager.db.VARIABLE_DB";
+	private final static String databaseId = "com_lathia_profilemanager_db_VARIABLE_DB";
 	private final StringListTable variableListTable;
 	
 	public VariableDatabase(final Context context, final String name)
 	{
-		super(context, databaseId+"."+name);
+		super(context, databaseId+"_"+name);
 		variableListTable = new StringListTable(databaseId);
 	}
 	
@@ -56,5 +56,13 @@ public class VariableDatabase extends AbstractProfileDatabase
 		String[] variables = variableListTable.getVariables(database);
 		database.close();
 		return variables;
+	}
+	
+	public boolean variableExists(final String variableName)
+	{
+		SQLiteDatabase database = getReadableDatabase();
+		boolean exists = variableListTable.variableExists(database, variableName);
+		database.close();
+		return exists;
 	}
 }

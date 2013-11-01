@@ -78,7 +78,10 @@ public abstract class DistributionActivity extends AbstractProfileActivity
 					String variableName = getDistributionVariableName();
 					if (variableName != null)
 					{
-						distribution = profileManager.getDistribution(variableName);
+						if (profileManager.containsDistributionVariable(variableName))
+						{
+							distribution = profileManager.getDistribution(variableName);
+						}
 					}
 				}
 				return distribution;

@@ -8,7 +8,7 @@ import com.lathia.profilemanager.db.tables.AbstractTable;
 
 public abstract class AbstractProfileDatabase extends SQLiteOpenHelper
 {
-	private final static int dbVersion = 1;
+	private final static int dbVersion = 2;
 	
 	public AbstractProfileDatabase(final Context context, final String databaseId)
 	{

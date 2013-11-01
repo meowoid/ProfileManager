@@ -8,6 +8,8 @@ import android.content.Context;
 import com.lathia.profilemanager.data.Distribution;
 import com.lathia.profilemanager.db.EventDatabase;
 import com.lathia.profilemanager.db.FrequencyDatabase;
+import com.lathia.surveymanager.data.answers.AbstractAnswer;
+import com.lathia.surveymanager.data.questions.AbstractQuestion;
 
 public class ProfileDataStore
 {
@@ -48,6 +50,11 @@ public class ProfileDataStore
 	{
 		return eventMap.getVariables();
 	}
+	
+	public boolean containsDistributionVariable(final String variableName)
+	{
+		return distributionMap.containsVariable(variableName);
+	}
 
 	/*
 	 * Distribution Feedback based on (Group Name, Variable Name)
@@ -64,21 +71,36 @@ public class ProfileDataStore
 		return database;
 	}
 
-	public void addToDistribution(final String groupName, final String variableName, final int value)
+	public void addToDistribution(final String variableName, final String variableValue, final int variableFrequency)
 	{
-		FrequencyDatabase database = getFrequencyDatabase(groupName);
-		database.increment(variableName, value);
+		FrequencyDatabase database = getFrequencyDatabase(variableName);
+		database.increment(variableValue, variableFrequency);
 	}
 	
-	public void removeDistributionTable(final String groupName)
+	public void removeDistributionTable(final String variableName)
 	{
-		distributionMap.remove(groupName);
+		distributionMap.remove(variableName);
 	}
 
-	public Distribution getDistribution(final String groupName)
+	public Distribution getDistribution(final String variableName)
 	{
-		FrequencyDatabase database = getFrequencyDatabase(groupName);
+		FrequencyDatabase database = getFrequencyDatabase(variableName);
 		return database.getDistribution();
+	}
+	
+	public void addToDistribution(final AbstractQuestion question, final AbstractAnswer answer)
+	{
+		HashMap<String, List<String>> variableMap = QuestionAnswerTranslator.getVariableValue(question, answer);
+		if (variableMap != null)
+		{
+			for (String variableName : variableMap.keySet())
+			{
+				for (String variableValue : variableMap.get(variableName))
+				{
+					addToDistribution(variableName, variableValue, 1);
+				}
+			}
+		}
 	}
 
 	/*

@@ -41,7 +41,7 @@ public class StringListTable extends AbstractTable
 		}
 	}
 	
-	private boolean variableExists(final SQLiteDatabase database, final String variable)
+	public boolean variableExists(final SQLiteDatabase database, final String variable)
 	{
 		try
 		{
