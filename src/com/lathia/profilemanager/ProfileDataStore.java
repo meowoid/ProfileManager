@@ -112,4 +112,10 @@ public class ProfileDataStore
 		EventDatabase database = getEventDatabase(groupName);
 		return database.getEvents(daysInPast);
 	}
+	
+	public int countEvents(final String groupName)
+	{
+		EventDatabase database = getEventDatabase(groupName);
+		return database.countEvents();
+	}
 }

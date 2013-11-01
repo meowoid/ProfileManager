@@ -52,4 +52,12 @@ public class EventDatabase extends AbstractProfileDatabase
 		database.close();
 		return events;
 	}
+	
+	public int countEvents()
+	{
+		SQLiteDatabase database = getReadableDatabase();
+		int numEvents = eventTable.countEvents(database);
+		database.close();
+		return numEvents;	
+	}
 }

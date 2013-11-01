@@ -46,6 +46,19 @@ public class EventTable extends AbstractTable
 		database.insert(tableName, null, content);
 	}
 	
+	public int countEvents(final SQLiteDatabase database)
+	{
+		Cursor cursor = database.query(tableName, null, null, null, null, null, null);
+		if (cursor != null)
+		{
+			return cursor.getCount();
+		}
+		else
+		{
+			return 0;
+		}
+	}
+	
 	public List<JSONObject> getJSONEvents(final SQLiteDatabase database, final int daysInPast)
 	{
 		ArrayList<JSONObject> events = new ArrayList<JSONObject>();
