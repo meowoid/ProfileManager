@@ -4,6 +4,7 @@ import com.lathia.surveymanager.data.answers.AbstractAnswer;
 import com.lathia.surveymanager.data.answers.RatingAnswer;
 import com.lathia.surveymanager.data.answers.RatingListAnswer;
 import com.lathia.surveymanager.data.answers.StringListAnswer;
+import com.lathia.surveymanager.data.questions.AbstractCategoricalQuestion;
 import com.lathia.surveymanager.data.questions.AbstractQuestion;
 import com.lathia.surveymanager.data.questions.RatingList;
 import com.lathia.surveymanager.data.questions.RatingQuestion;
@@ -15,7 +16,7 @@ public class QATranslator
 		String type = answer.getType();
 		if (type.equals(AbstractQuestion.TYPE_CATEGORICAL_SINGLE_CHOICE) || type.equals(AbstractQuestion.TYPE_CATEGORICAL_MULTIPLE_CHOICE))
 		{
-			return getCategoricalValues(question, (StringListAnswer) answer);
+			return getCategoricalValues((AbstractCategoricalQuestion) question, (StringListAnswer) answer);
 		}
 		else if (type.equals(AbstractQuestion.TYPE_RATING_LIST) || type.equals(AbstractQuestion.TYPE_RANDOM_SAMPLE))
 		{
@@ -24,7 +25,7 @@ public class QATranslator
 		return null;
 	}
 	
-	private static QuestionListProfile getCategoricalValues(AbstractQuestion question, StringListAnswer categoricalAnswer)
+	private static QuestionListProfile getCategoricalValues(AbstractCategoricalQuestion question, StringListAnswer categoricalAnswer)
 	{
 		if (question.includeInScoring())
 		{
@@ -32,7 +33,8 @@ public class QATranslator
 			QuestionListProfile variableMap = new QuestionListProfile();
 			
 			System.err.println("Adding variable: "+variableName);
-			variableMap.add(variableName, categoricalAnswer.getAnswerList());
+			variableMap.addResponse(variableName, categoricalAnswer.getAnswerList());
+			variableMap.addCategory(variableName, question.getChoices());
 			return variableMap;
 		}
 		else
@@ -57,7 +59,11 @@ public class QATranslator
 					String variableValue = getValue(rating.getId(), rating, ratingAnswers);
 					if (variableValue != null)
 					{
-						variableMap.add(variableName, variableValue);
+						variableMap.addResponse(variableName, variableValue);
+						for (int i=rating.getMinValue(); i<=rating.getMaxValue(); i++)
+						{
+							variableMap.addCategory(variableName, getRatingValue(i, rating));
+						}
 					}
 				}
 				catch (Exception e)
@@ -67,6 +73,11 @@ public class QATranslator
 			}
 		}
 		return variableMap;
+	}
+	
+	private static String getRatingValue(int ratingValue, RatingQuestion ratingQuestion)
+	{
+		return ratingValue+" " +ratingQuestion.getDescriptionForRating(ratingValue);
 	}
 	
 	private static String getValue(String ratingId, RatingQuestion ratingQuestion, RatingAnswer[] ratingAnswers)
@@ -80,7 +91,7 @@ public class QATranslator
 				{
 					ratingValue = (ratingQuestion.getMaxValue() - ratingValue) + ratingQuestion.getMinValue();
 				}
-				return ratingValue+" " +ratingQuestion.getDescriptionForRating(ratingValue);
+				return getRatingValue(ratingValue, ratingQuestion);
 			}
 		}
 		return null;

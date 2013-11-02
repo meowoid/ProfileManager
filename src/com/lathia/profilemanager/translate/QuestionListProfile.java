@@ -8,46 +8,63 @@ import com.lathia.profilemanager.ProfileDataStore;
 
 public class QuestionListProfile
 {
-	private final HashMap<String, List<String>> variableMap;
+	private final HashMap<String, List<String>> responseMap;
+	private final HashMap<String, List<String>> categoryMap;
 	
 	public QuestionListProfile()
 	{
-		variableMap = new HashMap<String, List<String>>();
+		responseMap = new HashMap<String, List<String>>();
+		categoryMap = new HashMap<String, List<String>>();
 	}
 	
-	private List<String> get(String variableName)
+	private List<String> get(String variableName, HashMap<String, List<String>> map)
 	{
-		List<String> variableValues = variableMap.get(variableName);
+		List<String> variableValues = map.get(variableName);
 		if (variableValues == null)
 		{
 			variableValues = new ArrayList<String>();
-			variableMap.put(variableName, variableValues);
+			map.put(variableName, variableValues);
 		}
 		return variableValues;
 	}
 	
-	public void add(String variableName, String variableValue)
+	public void addResponse(String variableName, String variableValue)
 	{
-		List<String> variableValues = get(variableName);
+		List<String> variableValues = get(variableName,responseMap);
 		variableValues.add(variableValue);
 	}
 	
-	public void add(String variableName, List<String> variableValues)
+	public void addResponse(String variableName, List<String> variableValues)
 	{
-		List<String> currentValues = get(variableName);
+		List<String> currentValues = get(variableName,responseMap);
+		currentValues.addAll(variableValues);
+	}
+	
+	public void addCategory(String variableName, String variableValue)
+	{
+		List<String> variableValues = get(variableName,categoryMap);
+		variableValues.add(variableValue);
+	}
+	
+	public void addCategory(String variableName, List<String> variableValues)
+	{
+		List<String> currentValues = get(variableName,categoryMap);
 		currentValues.addAll(variableValues);
 	}
 	
 	public void insertInto(ProfileDataStore dataStore)
 	{
-		if (variableMap != null)
+		insert(responseMap, dataStore, 1);
+		insert(categoryMap, dataStore, 0);
+	}
+	
+	private void insert(HashMap<String, List<String>> map, ProfileDataStore dataStore, int value)
+	{
+		for (String variableName : map.keySet())
 		{
-			for (String variableName : variableMap.keySet())
+			for (String variableValue : map.get(variableName))
 			{
-				for (String variableValue : variableMap.get(variableName))
-				{
-					dataStore.addToDistribution(variableName, variableValue, 1);
-				}
+				dataStore.addToDistribution(variableName, variableValue, value);
 			}
 		}
 	}
