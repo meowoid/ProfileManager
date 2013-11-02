@@ -8,6 +8,8 @@ import android.content.Context;
 import com.lathia.profilemanager.data.Distribution;
 import com.lathia.profilemanager.db.EventDatabase;
 import com.lathia.profilemanager.db.FrequencyDatabase;
+import com.lathia.profilemanager.translate.QATranslator;
+import com.lathia.profilemanager.translate.QuestionListProfile;
 import com.lathia.surveymanager.data.answers.AbstractAnswer;
 import com.lathia.surveymanager.data.questions.AbstractQuestion;
 
@@ -90,16 +92,10 @@ public class ProfileDataStore
 	
 	public void addToDistribution(final AbstractQuestion question, final AbstractAnswer answer)
 	{
-		HashMap<String, List<String>> variableMap = QuestionAnswerTranslator.getVariableValue(question, answer);
+		QuestionListProfile variableMap = QATranslator.getVariableValue(question, answer);
 		if (variableMap != null)
 		{
-			for (String variableName : variableMap.keySet())
-			{
-				for (String variableValue : variableMap.get(variableName))
-				{
-					addToDistribution(variableName, variableValue, 1);
-				}
-			}
+			variableMap.insertInto(this);
 		}
 	}
 
