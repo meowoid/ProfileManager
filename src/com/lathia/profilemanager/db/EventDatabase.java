@@ -3,6 +3,8 @@ package com.lathia.profilemanager.db;
 import java.util.HashMap;
 import java.util.List;
 
+import org.json.JSONObject;
+
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
@@ -39,6 +41,13 @@ public class EventDatabase extends AbstractProfileDatabase
 	}
 	
 	public void add(final long entryTime, final HashMap<String, String> values)
+	{
+		SQLiteDatabase database = getWritableDatabase();
+		eventTable.add(database, entryTime, values);
+		database.close();
+	}
+	
+	public void add(final long entryTime, final JSONObject values)
 	{
 		SQLiteDatabase database = getWritableDatabase();
 		eventTable.add(database, entryTime, values);

@@ -3,6 +3,8 @@ package com.lathia.profilemanager;
 import java.util.HashMap;
 import java.util.List;
 
+import org.json.JSONObject;
+
 import android.content.Context;
 
 import com.lathia.profilemanager.data.Distribution;
@@ -81,6 +83,8 @@ public class ProfileDataStore
 	
 	public void removeDistributionTable(final String variableName)
 	{
+		FrequencyDatabase database = getFrequencyDatabase(variableName);
+		database.deleteAll();
 		distributionMap.remove(variableName);
 	}
 
@@ -120,8 +124,16 @@ public class ProfileDataStore
 		database.add(entryTimeInMillis, event);
 	}
 	
+	public void addEvent(final String groupName, final long entryTimeInMillis, final JSONObject event)
+	{
+		EventDatabase database = getEventDatabase(groupName);
+		database.add(entryTimeInMillis, event);
+	}
+	
 	public void removeEventTable(final String groupName)
 	{
+		EventDatabase database = getEventDatabase(groupName);
+		database.deleteAll();
 		eventMap.remove(groupName);
 	}
 	
