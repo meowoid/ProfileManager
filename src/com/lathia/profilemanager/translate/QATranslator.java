@@ -31,8 +31,6 @@ public class QATranslator
 		{
 			String variableName = question.getVariable();
 			QuestionListProfile variableMap = new QuestionListProfile();
-			
-			System.err.println("Adding variable: "+variableName);
 			variableMap.addResponse(variableName, categoricalAnswer.getAnswerList());
 			variableMap.addCategory(variableName, question.getChoices());
 			return variableMap;

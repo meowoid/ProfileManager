@@ -66,7 +66,7 @@ public class EventTable extends AbstractTable
 		{
 			long one_day = 1000L * 60 * 60 * 24;
 			long timeLimit = System.currentTimeMillis() - (daysInPast * one_day);
-			Cursor cursor = database.query(tableName, new String[]{variableMap}, timeStamp+" > ", new String[]{""+timeLimit}, null, null, null);
+			Cursor cursor = database.query(tableName, new String[]{variableMap}, timeStamp+" > ?", new String[]{""+timeLimit}, null, null, null);
 			if (cursor != null)
 			{
 				int eventIndex = cursor.getColumnIndex(variableMap);
