@@ -17,6 +17,7 @@ public abstract class AbstractProfileDatabase extends SQLiteOpenHelper
 	
 	protected void reset(final AbstractTable table, final SQLiteDatabase database)
 	{
+		table.removeContents(database);
 		table.dropTable(database);
 		table.createTable(database);
 	}

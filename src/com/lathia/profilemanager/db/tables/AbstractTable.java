@@ -18,6 +18,11 @@ public abstract class AbstractTable
 		database.execSQL("DROP TABLE IF EXISTS " + tableName);
 	}
 	
+	public void removeContents(final SQLiteDatabase database)
+	{
+		database.delete(tableName, null, null);
+	}
+	
 	public void upgradeTable(final SQLiteDatabase database)
 	{
 		// TODO save content!

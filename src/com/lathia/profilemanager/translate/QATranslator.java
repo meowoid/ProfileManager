@@ -13,14 +13,17 @@ public class QATranslator
 {
 	public static QuestionListProfile getVariableValue(AbstractQuestion question, AbstractAnswer answer)
 	{
-		String type = answer.getType();
-		if (type.equals(AbstractQuestion.TYPE_CATEGORICAL_SINGLE_CHOICE) || type.equals(AbstractQuestion.TYPE_CATEGORICAL_MULTIPLE_CHOICE))
+		if (answer != null)
 		{
-			return getCategoricalValues((AbstractCategoricalQuestion) question, (StringListAnswer) answer);
-		}
-		else if (type.equals(AbstractQuestion.TYPE_RATING_LIST) || type.equals(AbstractQuestion.TYPE_RANDOM_SAMPLE))
-		{
-			return getRatingValues((RatingList) question, (RatingListAnswer) answer);
+			String type = answer.getType();
+			if (type.equals(AbstractQuestion.TYPE_CATEGORICAL_SINGLE_CHOICE) || type.equals(AbstractQuestion.TYPE_CATEGORICAL_MULTIPLE_CHOICE))
+			{
+				return getCategoricalValues((AbstractCategoricalQuestion) question, (StringListAnswer) answer);
+			}
+			else if (type.equals(AbstractQuestion.TYPE_RATING_LIST) || type.equals(AbstractQuestion.TYPE_RANDOM_SAMPLE))
+			{
+				return getRatingValues((RatingList) question, (RatingListAnswer) answer);
+			}
 		}
 		return null;
 	}

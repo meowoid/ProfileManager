@@ -31,7 +31,7 @@ public class QuestionListFrequencyDatabase// extends FrequencyDatabase
 //			}
 //			else
 //			{
-//				// TODO other question types?
+//				// other question types?
 //			}
 //		}
 //	}

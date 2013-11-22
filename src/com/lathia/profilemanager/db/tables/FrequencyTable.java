@@ -83,7 +83,10 @@ public class FrequencyTable extends AbstractTable
 			{
 				String key = cursor.getString(variableNameIndex);
 				Integer frequency = cursor.getInt(variableValueIndex);
-				result.put(key, frequency);
+				if (frequency > 0)
+				{
+					result.put(key, frequency);
+				}
 				cursor.moveToNext();
 			}
 			cursor.close();

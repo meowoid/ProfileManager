@@ -1,7 +1,6 @@
 package com.lathia.profilemanager.ui.distribution;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
@@ -19,7 +18,6 @@ public abstract class DistributionActivity extends AbstractProfileActivity
 	{
 		super.onCreate(savedInstanceState);
 		overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
-		Intent intent = getIntent();
 		String title = getDistributionTitle();
 		if (title != null)
 		{
@@ -29,7 +27,13 @@ public abstract class DistributionActivity extends AbstractProfileActivity
 				textView.setText(title);
 			}
 		}
-		loadData(intent);
+	}
+	
+	@Override
+	public void onResume()
+	{
+		super.onResume();
+		loadData(getIntent());
 	}
 
 	protected abstract String getDistributionTitle();
@@ -51,25 +55,88 @@ public abstract class DistributionActivity extends AbstractProfileActivity
 		}
 		return null;
 	}
-
-	protected void loadData(final Intent intent)
+	
+	private void showLoading(final boolean isLoading)
 	{
-		new AsyncTask<Void, Void, Distribution>()
+		runOnUiThread(new Runnable()
 		{
+
 			@Override
-			protected void onPreExecute()
+			public void run()
 			{
-				super.onPreExecute();
+				showLoadingInto(getLoadingProgressBar(), getListView(), isLoading);
+			}
+		});
+	}
+	
+	private void showNoDataView(final int visibility)
+	{
+		runOnUiThread(new Runnable()
+		{
+
+			@Override
+			public void run()
+			{
 				View noData = getNoDataView();
 				if (noData != null)
 				{
-					noData.setVisibility(View.GONE);
+					noData.setVisibility(visibility);
 				}
-				showLoadingInto(getLoadingProgressBar(), getListView(), true);
 			}
+		});
+	}
+	
+	private void updateListView(final Distribution distribution)
+	{
+		runOnUiThread(new Runnable()
+		{
 
 			@Override
-			protected Distribution doInBackground(Void... params)
+			public void run()
+			{
+				if (distribution != null)
+				{
+					ListView listView = getListView();
+					if (listView != null)
+					{
+						DistributionListAdapter adapter = (DistributionListAdapter) listView.getAdapter();
+						if (adapter != null)
+						{
+							adapter.clear();
+							adapter.notifyDataSetChanged();
+						}
+						listView.setAdapter(getAdapter(distribution));
+					}
+					showNoDataView(View.GONE);
+				}
+				else
+				{
+					showNoDataView(View.VISIBLE);
+					onNoDataAvailable();
+				}
+			}
+		});
+	}
+
+	protected void loadData(final Intent intent)
+	{
+		new Thread()
+		{
+			@Override
+			public void run()
+			{
+				onPreExecute();
+				Distribution distribution = doInBackground();
+				onPostExecute(distribution);
+			}
+			
+			protected void onPreExecute()
+			{
+				showNoDataView(View.GONE);
+				showLoading(true);
+			}
+
+			protected Distribution doInBackground()
 			{
 				Distribution distribution = getDistribution();
 				if (distribution == null)
@@ -87,34 +154,20 @@ public abstract class DistributionActivity extends AbstractProfileActivity
 				return distribution;
 			}
 
-			@Override
 			protected void onPostExecute(Distribution distribution)
 			{
-				super.onPostExecute(distribution);
-				View noData = getNoDataView();
+				updateListView(distribution);
+				showLoading(false);
 				if (distribution != null)
 				{
-					ListView listView = getListView();
-					if (listView != null)
-					{
-						listView.setAdapter(getAdapter(distribution));
-					}
-					if (noData != null)
-					{
-						noData.setVisibility(View.GONE);
-					}
+					showNoDataView(View.GONE);
 				}
 				else
 				{
-					if (noData != null)
-					{
-						noData.setVisibility(View.VISIBLE);
-					}
-					onNoDataAvailable();
+					showNoDataView(View.VISIBLE);
 				}
-				showLoadingInto(getLoadingProgressBar(), getListView(), false);
 			}
-		}.execute();
+		}.start();
 	}
 	
 	protected abstract void onNoDataAvailable();

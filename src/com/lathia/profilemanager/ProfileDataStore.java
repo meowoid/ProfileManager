@@ -83,9 +83,14 @@ public class ProfileDataStore
 	
 	public void removeDistributionTable(final String variableName)
 	{
-		FrequencyDatabase database = getFrequencyDatabase(variableName);
-		database.deleteAll();
-		distributionMap.remove(variableName);
+		try
+		{
+			FrequencyDatabase database = getFrequencyDatabase(variableName);
+			database.deleteAll();
+			distributionMap.remove(variableName);
+		}
+		catch (NullPointerException e)
+		{}
 	}
 
 	public Distribution getDistribution(final String variableName)
