@@ -6,6 +6,8 @@ import com.lathia.surveymanager.data.answers.RatingListAnswer;
 import com.lathia.surveymanager.data.answers.StringListAnswer;
 import com.lathia.surveymanager.data.questions.AbstractCategoricalQuestion;
 import com.lathia.surveymanager.data.questions.AbstractQuestion;
+import com.lathia.surveymanager.data.questions.RandomSampleGroup;
+import com.lathia.surveymanager.data.questions.RandomSampleQuestion;
 import com.lathia.surveymanager.data.questions.RatingList;
 import com.lathia.surveymanager.data.questions.RatingQuestion;
 
@@ -15,14 +17,18 @@ public class QATranslator
 	{
 		if (answer != null)
 		{
-			String type = answer.getType();
+			String type = question.getType();
 			if (type.equals(AbstractQuestion.TYPE_CATEGORICAL_SINGLE_CHOICE) || type.equals(AbstractQuestion.TYPE_CATEGORICAL_MULTIPLE_CHOICE))
 			{
 				return getCategoricalValues((AbstractCategoricalQuestion) question, (StringListAnswer) answer);
 			}
-			else if (type.equals(AbstractQuestion.TYPE_RATING_LIST) || type.equals(AbstractQuestion.TYPE_RANDOM_SAMPLE))
+			else if (type.equals(AbstractQuestion.TYPE_RATING_LIST))
 			{
 				return getRatingValues((RatingList) question, (RatingListAnswer) answer);
+			}
+			else if (type.equals(AbstractQuestion.TYPE_RANDOM_SAMPLE))
+			{
+				return getSampleRatingValues((RandomSampleQuestion) question, (RatingListAnswer) answer);
 			}
 		}
 		return null;
@@ -44,33 +50,44 @@ public class QATranslator
 		}
 	}
 	
-	private static QuestionListProfile getRatingValues(RatingList ratingListQuestion, RatingListAnswer ratingListAnswer)
+	private static void getRatingValues(QuestionListProfile variableMap, RatingQuestion[] ratingQuestions, RatingListAnswer ratingListAnswer)
 	{
-		QuestionListProfile variableMap = new QuestionListProfile();
-		
 		RatingAnswer[] ratingAnswers = ratingListAnswer.getRatings();
-		RatingQuestion[] ratingQuestions = ratingListQuestion.getQuestions();
 		for (RatingQuestion rating : ratingQuestions)
 		{
 			if (rating.includeInScoring())
 			{
-				try
+				String variableName = rating.getVariable();
+				String variableValue = getValue(rating.getId(), rating, ratingAnswers);
+				if (variableValue != null)
 				{
-					String variableName = rating.getVariable();
-					String variableValue = getValue(rating.getId(), rating, ratingAnswers);
-					if (variableValue != null)
+					variableMap.addResponse(variableName, variableValue);
+					for (int i=rating.getMinValue(); i<=rating.getMaxValue(); i++)
 					{
-						variableMap.addResponse(variableName, variableValue);
-						for (int i=rating.getMinValue(); i<=rating.getMaxValue(); i++)
-						{
-							variableMap.addCategory(variableName, getRatingValue(i, rating));
-						}
+						variableMap.addCategory(variableName, getRatingValue(i, rating));
 					}
 				}
-				catch (Exception e)
-				{
-					e.printStackTrace();
-				}
+			}
+		}
+	}
+	
+	private static QuestionListProfile getRatingValues(RatingList ratingListQuestion, RatingListAnswer ratingListAnswer)
+	{
+		QuestionListProfile variableMap = new QuestionListProfile();
+		getRatingValues(variableMap, ratingListQuestion.getQuestions(), ratingListAnswer);
+		return variableMap;
+	}
+	
+	private static QuestionListProfile getSampleRatingValues(RandomSampleQuestion ratingListQuestion, RatingListAnswer ratingListAnswer)
+	{
+		QuestionListProfile variableMap = new QuestionListProfile();
+		RandomSampleGroup[] groups = ratingListQuestion.getGroups();
+		for (RandomSampleGroup group : groups)
+		{
+			if (group.includeInScoring())
+			{
+				RatingQuestion[] ratings = group.getQuestions();
+				getRatingValues(variableMap, ratings, ratingListAnswer);
 			}
 		}
 		return variableMap;
