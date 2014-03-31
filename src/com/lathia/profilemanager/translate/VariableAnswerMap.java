@@ -6,12 +6,12 @@ import java.util.List;
 
 import com.lathia.profilemanager.ProfileDataStore;
 
-public class QuestionListProfile
+public class VariableAnswerMap
 {
 	private final HashMap<String, List<String>> responseMap;
 	private final HashMap<String, List<String>> categoryMap;
 	
-	public QuestionListProfile()
+	public VariableAnswerMap()
 	{
 		responseMap = new HashMap<String, List<String>>();
 		categoryMap = new HashMap<String, List<String>>();

@@ -13,7 +13,7 @@ import com.lathia.surveymanager.data.questions.RatingQuestion;
 
 public class QATranslator
 {
-	public static QuestionListProfile getVariableValue(AbstractQuestion question, AbstractAnswer answer)
+	public static VariableAnswerMap getVariableValue(final AbstractQuestion question, final AbstractAnswer answer)
 	{
 		if (answer != null)
 		{
@@ -34,12 +34,12 @@ public class QATranslator
 		return null;
 	}
 	
-	private static QuestionListProfile getCategoricalValues(AbstractCategoricalQuestion question, StringListAnswer categoricalAnswer)
+	private static VariableAnswerMap getCategoricalValues(AbstractCategoricalQuestion question, StringListAnswer categoricalAnswer)
 	{
 		if (question.includeInScoring())
 		{
 			String variableName = question.getVariable();
-			QuestionListProfile variableMap = new QuestionListProfile();
+			VariableAnswerMap variableMap = new VariableAnswerMap();
 			variableMap.addResponse(variableName, categoricalAnswer.getAnswerList());
 			variableMap.addCategory(variableName, question.getChoices());
 			return variableMap;
@@ -50,7 +50,7 @@ public class QATranslator
 		}
 	}
 	
-	private static void getRatingValues(QuestionListProfile variableMap, RatingQuestion[] ratingQuestions, RatingListAnswer ratingListAnswer)
+	private static void getRatingValues(VariableAnswerMap variableMap, RatingQuestion[] ratingQuestions, RatingListAnswer ratingListAnswer)
 	{
 		RatingAnswer[] ratingAnswers = ratingListAnswer.getRatings();
 		for (RatingQuestion rating : ratingQuestions)
@@ -71,16 +71,16 @@ public class QATranslator
 		}
 	}
 	
-	private static QuestionListProfile getRatingValues(RatingList ratingListQuestion, RatingListAnswer ratingListAnswer)
+	private static VariableAnswerMap getRatingValues(RatingList ratingListQuestion, RatingListAnswer ratingListAnswer)
 	{
-		QuestionListProfile variableMap = new QuestionListProfile();
+		VariableAnswerMap variableMap = new VariableAnswerMap();
 		getRatingValues(variableMap, ratingListQuestion.getQuestions(), ratingListAnswer);
 		return variableMap;
 	}
 	
-	private static QuestionListProfile getSampleRatingValues(RandomSampleQuestion ratingListQuestion, RatingListAnswer ratingListAnswer)
+	private static VariableAnswerMap getSampleRatingValues(RandomSampleQuestion ratingListQuestion, RatingListAnswer ratingListAnswer)
 	{
-		QuestionListProfile variableMap = new QuestionListProfile();
+		VariableAnswerMap variableMap = new VariableAnswerMap();
 		RandomSampleGroup[] groups = ratingListQuestion.getGroups();
 		for (RandomSampleGroup group : groups)
 		{

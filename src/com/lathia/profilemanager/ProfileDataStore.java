@@ -11,12 +11,12 @@ import com.lathia.profilemanager.data.Distribution;
 import com.lathia.profilemanager.db.EventDatabase;
 import com.lathia.profilemanager.db.FrequencyDatabase;
 import com.lathia.profilemanager.translate.QATranslator;
-import com.lathia.profilemanager.translate.QuestionListProfile;
+import com.lathia.profilemanager.translate.VariableAnswerMap;
 import com.lathia.surveymanager.data.answers.AbstractAnswer;
 import com.lathia.surveymanager.data.questions.AbstractQuestion;
 
 public class ProfileDataStore
-{
+{	
 	protected static String DISTRIBUTIONS = "distributions";
 	protected static String EVENTS = "events";
 	private static ProfileDataStore instance;
@@ -34,7 +34,7 @@ public class ProfileDataStore
 	protected final TableMap<FrequencyDatabase> distributionMap;
 	protected final TableMap<EventDatabase> eventMap;
 
-	public ProfileDataStore(final Context context)
+	protected ProfileDataStore(final Context context)
 	{
 		this.context = context;
 		this.distributionMap = new TableMap<FrequencyDatabase>(context, DISTRIBUTIONS);
@@ -101,7 +101,7 @@ public class ProfileDataStore
 	
 	public void addToDistribution(final AbstractQuestion question, final AbstractAnswer answer)
 	{
-		QuestionListProfile variableMap = QATranslator.getVariableValue(question, answer);
+		VariableAnswerMap variableMap = QATranslator.getVariableValue(question, answer);
 		if (variableMap != null)
 		{
 			variableMap.insertInto(this);
