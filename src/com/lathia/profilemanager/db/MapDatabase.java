@@ -1,20 +1,18 @@
 package com.lathia.profilemanager.db;
 
 import java.util.HashMap;
-import java.util.List;
-
-import org.json.JSONObject;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.lathia.profilemanager.db.tables.EventTable;
+import com.lathia.profilemanager.db.tables.MapTable;
 
-public class EventDatabase extends AbstractProfileDatabase
+public class MapDatabase extends AbstractProfileDatabase
 {
-	public EventDatabase(final Context context, final String databaseId)
+	public MapDatabase(final Context context, final String databaseId)
 	{
-		super(context, databaseId, new EventTable(databaseId));
+		super(context, databaseId, new MapTable(databaseId));
 	}
 	
 	public void add(final long entryTime, final HashMap<String, String> values)
@@ -24,26 +22,26 @@ public class EventDatabase extends AbstractProfileDatabase
 		database.close();
 	}
 	
-	public void add(final long entryTime, final JSONObject values)
+	public void set(final String variable, final String value)
 	{
 		SQLiteDatabase database = getWritableDatabase();
-		((EventTable) table).add(database, entryTime, values);
+		((MapTable) table).setField(database, variable, value);
 		database.close();
 	}
 	
-	public List<HashMap<String, String>> getEvents(int daysInPast)
+	public HashMap<String, String> getMapping()
 	{
 		SQLiteDatabase database = getReadableDatabase();
-		List<HashMap<String, String>> events = ((EventTable) table).getEvents(database, daysInPast);
+		HashMap<String, String> map = ((MapTable) table).getMapping(database);
 		database.close();
-		return events;
+		return map;
 	}
 	
-	public int countEvents()
+	public String getValue(final String variable)
 	{
 		SQLiteDatabase database = getReadableDatabase();
-		int numEvents = ((EventTable) table).countEvents(database);
+		String value = ((MapTable) table).getValue(database, variable);
 		database.close();
-		return numEvents;	
+		return value;
 	}
 }

@@ -10,15 +10,18 @@ import android.content.Context;
 import com.lathia.profilemanager.data.Distribution;
 import com.lathia.profilemanager.db.EventDatabase;
 import com.lathia.profilemanager.db.FrequencyDatabase;
+import com.lathia.profilemanager.db.MapDatabase;
 import com.lathia.profilemanager.translate.QATranslator;
 import com.lathia.profilemanager.translate.VariableAnswerMap;
 import com.lathia.surveymanager.data.answers.AbstractAnswer;
 import com.lathia.surveymanager.data.questions.AbstractQuestion;
 
-public class ProfileDataStore
+public class ProfileDataStore implements ProfileInterface
 {	
-	protected static String DISTRIBUTIONS = "distributions";
-	protected static String EVENTS = "events";
+	protected static final String DISTRIBUTIONS = "distributions";
+	protected static final String EVENTS = "events";
+	protected static final String MAPPINGS = "mappings";
+	
 	private static ProfileDataStore instance;
 
 	public static ProfileDataStore getInstance(Context context)
@@ -33,12 +36,14 @@ public class ProfileDataStore
 	protected final Context context;
 	protected final TableMap<FrequencyDatabase> distributionMap;
 	protected final TableMap<EventDatabase> eventMap;
+	protected final TableMap<MapDatabase> mapMap;
 
 	protected ProfileDataStore(final Context context)
 	{
 		this.context = context;
 		this.distributionMap = new TableMap<FrequencyDatabase>(context, DISTRIBUTIONS);
 		this.eventMap = new TableMap<EventDatabase>(context, EVENTS);
+		this.mapMap = new TableMap<MapDatabase>(context, MAPPINGS);
 	}
 
 	/*
@@ -61,7 +66,7 @@ public class ProfileDataStore
 	}
 
 	/*
-	 * Distribution Feedback based on (Group Name, Variable Name)
+	 * Distribution Feedback: (Group Name, Variable Name, Variable Count)
 	 */
 	
 	private FrequencyDatabase getFrequencyDatabase(final String tableName)
@@ -109,7 +114,7 @@ public class ProfileDataStore
 	}
 
 	/*
-	 * Events
+	 * Events: time stamped list of entries
 	 */
 	
 	private EventDatabase getEventDatabase(final String tableName)
@@ -152,5 +157,41 @@ public class ProfileDataStore
 	{
 		EventDatabase database = getEventDatabase(groupName);
 		return database.countEvents();
+	}
+	
+	/*
+	 * Mappings (Group Name, Variable Name, Variable Value)
+	 */
+	
+	private MapDatabase getMapDatabase(final String tableName)
+	{
+		MapDatabase database = mapMap.get(tableName);
+		if (database == null)
+		{
+			database = new MapDatabase(context, tableName);
+			mapMap.put(tableName, database);
+		}
+		return database;
+	}
+	
+	@Override
+	public void setMapVariableValue(final String group, final String name, final String value)
+	{
+		MapDatabase database = getMapDatabase(group);
+		database.set(name, value);
+	}
+	
+	@Override
+	public String getMapVariableValue(final String group, final String name)
+	{
+		MapDatabase database = getMapDatabase(group);
+		return database.getValue(name);
+	}
+	
+	@Override
+	public HashMap<String, String> getMap(final String group)
+	{
+		MapDatabase database = getMapDatabase(group);
+		return database.getMapping();
 	}
 }

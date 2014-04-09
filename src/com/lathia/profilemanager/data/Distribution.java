@@ -7,25 +7,21 @@ import java.util.HashMap;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class Distribution implements Parcelable
+public class Distribution extends HashMap<String, Integer> implements Parcelable
 {
-	private final HashMap<String, Integer> values;
+	private static final long serialVersionUID = -6343668736434104839L;
 	
 	public Distribution()
 	{
-		values = new HashMap<String, Integer>();
+		super();
 	}
 	
-	public void put(String key, Integer value)
+	@Override
+	public Integer get(final Object key)
 	{
-		values.put(key, value);
-	}
-	
-	public int get(final String key)
-	{
-		if (values.containsKey(key))
+		if (containsKey(key))
 		{
-			return values.get(key);
+			return super.get(key);
 		}
 		else
 		{
@@ -33,15 +29,10 @@ public class Distribution implements Parcelable
 		}
 	}
 	
-	public boolean isEmpty()
-	{
-		return values.keySet().isEmpty();
-	}
-	
 	public ArrayList<String> getKeys()
 	{
 		ArrayList<String> keys = new ArrayList<String>();
-		keys.addAll(values.keySet());
+		keys.addAll(keySet());
 		Collections.sort(keys);
 		return keys;
 	}
@@ -49,7 +40,7 @@ public class Distribution implements Parcelable
 	public int frequencySum()
 	{
 		int sum = 0;
-		for (Integer value : values.values())
+		for (Integer value : values())
 		{
 			sum += value;
 		}
@@ -67,13 +58,13 @@ public class Distribution implements Parcelable
 	
 	public Distribution(Parcel in)
 	{
-		values = new HashMap<String, Integer>();
+		super();
 		int size = in.readInt();
 		for (int i=0; i<size; i++)
 		{
 			String key = in.readString();
 			Integer value = in.readInt();
-			values.put(key, value);
+			put(key, value);
 		}
 	}
 
@@ -99,11 +90,11 @@ public class Distribution implements Parcelable
 	@Override
 	public void writeToParcel(Parcel dest, int flags)
 	{
-		dest.writeInt(values.keySet().size());
-		for (String key : values.keySet())
+		dest.writeInt(keySet().size());
+		for (String key : keySet())
 		{
 			dest.writeString(key);
-			dest.writeInt(values.get(key));
+			dest.writeInt(get(key));
 		}
 	}
 }
