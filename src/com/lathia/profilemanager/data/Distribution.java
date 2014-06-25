@@ -29,6 +29,12 @@ public class Distribution extends HashMap<String, Integer> implements Parcelable
 		}
 	}
 	
+	public void increment(final String key, final int amount)
+	{
+		Integer currentValue = get(key);
+		put(key, currentValue + amount);
+	}
+	
 	public ArrayList<String> getKeys()
 	{
 		ArrayList<String> keys = new ArrayList<String>();

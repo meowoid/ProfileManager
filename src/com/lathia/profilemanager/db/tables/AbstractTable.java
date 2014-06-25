@@ -25,7 +25,6 @@ public abstract class AbstractTable
 	
 	public void upgradeTable(final SQLiteDatabase database)
 	{
-		// TODO save content!
 		dropTable(database);
 		createTable(database);
 	}
