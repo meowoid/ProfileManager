@@ -9,14 +9,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v4.content.LocalBroadcastManager;
 
-import com.lathia.surveymanager.data.answers.AbstractAnswer;
-import com.lathia.surveymanager.data.questions.AbstractQuestion;
 import com.ubhave.profilemanager.data.Distribution;
 import com.ubhave.profilemanager.db.EventDatabase;
 import com.ubhave.profilemanager.db.FrequencyDatabase;
 import com.ubhave.profilemanager.db.MapDatabase;
-import com.ubhave.profilemanager.translate.QATranslator;
-import com.ubhave.profilemanager.translate.VariableAnswerMap;
 
 public class ProfileDataStore implements ProfileInterface
 {	
@@ -59,7 +55,7 @@ public class ProfileDataStore implements ProfileInterface
 	 * Broadcasting Content Changes
 	 */
 	
-	private void broadcast(final String message, final String details)
+	protected void broadcast(final String message, final String details)
 	{
 		Intent intent = new Intent(CONTENT_BROADCAST);
 		intent.putExtra(CONTENT_TYPE, message);
@@ -128,16 +124,6 @@ public class ProfileDataStore implements ProfileInterface
 	{
 		FrequencyDatabase database = getFrequencyDatabase(variableName);
 		return database.getDistribution();
-	}
-	
-	public void addToDistribution(final AbstractQuestion question, final AbstractAnswer answer)
-	{
-		VariableAnswerMap variableMap = QATranslator.getVariableValue(question, answer);
-		if (variableMap != null)
-		{
-			variableMap.insertInto(this);
-		}
-		broadcast(TYPE_DISTRIBUTIONS_CHANGED, question.getId());
 	}
 
 	/*
