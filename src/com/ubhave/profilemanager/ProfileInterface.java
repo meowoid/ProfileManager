@@ -1,4 +1,4 @@
-package com.lathia.profilemanager;
+package com.ubhave.profilemanager;
 
 import java.util.HashMap;
 

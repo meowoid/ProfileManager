@@ -1,11 +1,11 @@
-package com.lathia.profilemanager.db;
+package com.ubhave.profilemanager.db;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 
-import com.lathia.profilemanager.data.Distribution;
-import com.lathia.profilemanager.db.tables.FrequencyTable;
+import com.ubhave.profilemanager.data.Distribution;
+import com.ubhave.profilemanager.db.tables.FrequencyTable;
 
 public class FrequencyDatabase extends AbstractProfileDatabase
 {	

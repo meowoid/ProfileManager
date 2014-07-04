@@ -1,10 +1,10 @@
-package com.lathia.profilemanager.db;
+package com.ubhave.profilemanager.db;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.lathia.profilemanager.db.tables.AbstractTable;
+import com.ubhave.profilemanager.db.tables.AbstractTable;
 
 public abstract class AbstractProfileDatabase extends SQLiteOpenHelper
 {

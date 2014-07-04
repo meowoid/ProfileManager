@@ -1,4 +1,4 @@
-package com.lathia.profilemanager.ui;
+package com.ubhave.profilemanager.ui;
 
 import android.app.Activity;
 import android.os.Bundle;

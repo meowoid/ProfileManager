@@ -1,4 +1,4 @@
-package com.lathia.profilemanager.db;
+package com.ubhave.profilemanager.db;
 
 import java.util.HashMap;
 import java.util.List;
@@ -8,7 +8,7 @@ import org.json.JSONObject;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.lathia.profilemanager.db.tables.EventTable;
+import com.ubhave.profilemanager.db.tables.EventTable;
 
 public class EventDatabase extends AbstractProfileDatabase
 {

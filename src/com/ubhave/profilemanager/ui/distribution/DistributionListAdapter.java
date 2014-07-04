@@ -1,4 +1,4 @@
-package com.lathia.profilemanager.ui.distribution;
+package com.ubhave.profilemanager.ui.distribution;
 
 import java.text.DecimalFormat;
 
@@ -9,7 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.lathia.profilemanager.data.Distribution;
+import com.ubhave.profilemanager.data.Distribution;
 
 public abstract class DistributionListAdapter extends ArrayAdapter<String>
 {

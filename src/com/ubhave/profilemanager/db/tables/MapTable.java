@@ -1,4 +1,4 @@
-package com.lathia.profilemanager.db.tables;
+package com.ubhave.profilemanager.db.tables;
 
 import java.util.HashMap;
 

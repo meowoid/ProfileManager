@@ -1,11 +1,11 @@
-package com.lathia.profilemanager;
+package com.ubhave.profilemanager;
 
 import java.util.HashMap;
 
 import android.content.Context;
 
-import com.lathia.profilemanager.db.AbstractProfileDatabase;
-import com.lathia.profilemanager.db.VariableDatabase;
+import com.ubhave.profilemanager.db.AbstractProfileDatabase;
+import com.ubhave.profilemanager.db.VariableDatabase;
 
 public class TableMap <T extends AbstractProfileDatabase>
 {

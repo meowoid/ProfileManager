@@ -1,4 +1,4 @@
-package com.lathia.profilemanager.ui.distribution;
+package com.ubhave.profilemanager.ui.distribution;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,9 +6,9 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.lathia.profilemanager.ProfileDataStore;
-import com.lathia.profilemanager.data.Distribution;
-import com.lathia.profilemanager.ui.AbstractProfileActivity;
+import com.ubhave.profilemanager.ProfileDataStore;
+import com.ubhave.profilemanager.data.Distribution;
+import com.ubhave.profilemanager.ui.AbstractProfileActivity;
 
 public abstract class DistributionActivity extends AbstractProfileActivity
 {

@@ -1,4 +1,4 @@
-package com.lathia.profilemanager.translate;
+package com.ubhave.profilemanager.translate;
 
 import com.lathia.surveymanager.data.answers.AbstractAnswer;
 import com.lathia.surveymanager.data.answers.RatingAnswer;

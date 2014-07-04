@@ -1,4 +1,4 @@
-package com.lathia.profilemanager.data;
+package com.ubhave.profilemanager.data;
 
 import java.util.ArrayList;
 import java.util.Collections;

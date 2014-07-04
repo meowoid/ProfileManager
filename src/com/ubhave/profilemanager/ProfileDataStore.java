@@ -1,4 +1,4 @@
-package com.lathia.profilemanager;
+package com.ubhave.profilemanager;
 
 import java.util.HashMap;
 import java.util.List;
@@ -9,23 +9,23 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v4.content.LocalBroadcastManager;
 
-import com.lathia.profilemanager.data.Distribution;
-import com.lathia.profilemanager.db.EventDatabase;
-import com.lathia.profilemanager.db.FrequencyDatabase;
-import com.lathia.profilemanager.db.MapDatabase;
-import com.lathia.profilemanager.translate.QATranslator;
-import com.lathia.profilemanager.translate.VariableAnswerMap;
 import com.lathia.surveymanager.data.answers.AbstractAnswer;
 import com.lathia.surveymanager.data.questions.AbstractQuestion;
+import com.ubhave.profilemanager.data.Distribution;
+import com.ubhave.profilemanager.db.EventDatabase;
+import com.ubhave.profilemanager.db.FrequencyDatabase;
+import com.ubhave.profilemanager.db.MapDatabase;
+import com.ubhave.profilemanager.translate.QATranslator;
+import com.ubhave.profilemanager.translate.VariableAnswerMap;
 
 public class ProfileDataStore implements ProfileInterface
 {	
-	public static final String CONTENT_BROADCAST = "com.lathia.profilemanager-ProfileDataStore";
+	public static final String CONTENT_BROADCAST = "com.ubhave.profilemanager-ProfileDataStore";
 	public static final String CONTENT_TYPE = "content-type";
 	public static final String CONTENT_KEY = "content-key";
-	public static final String DISTRIBUTIONS_CHANGED = "changed-distributions";
-	public static final String EVENTS_CHANGED = "changed-events";
-	public static final String MAPPINGS_CHANGED = "changed-mappings";
+	public static final String TYPE_DISTRIBUTIONS_CHANGED = "changed-distributions";
+	public static final String TYPE_EVENTS_CHANGED = "changed-events";
+	public static final String TYPE_MAPPINGS_CHANGED = "changed-mappings";
 	
 	protected static final String DISTRIBUTIONS = "distributions";
 	protected static final String EVENTS = "events";
@@ -108,7 +108,7 @@ public class ProfileDataStore implements ProfileInterface
 	{
 		FrequencyDatabase database = getFrequencyDatabase(variableName);
 		database.increment(variableValue, variableFrequency);
-		broadcast(DISTRIBUTIONS_CHANGED, variableName);
+		broadcast(TYPE_DISTRIBUTIONS_CHANGED, variableName);
 	}
 	
 	public void removeDistributionTable(final String variableName)
@@ -118,7 +118,7 @@ public class ProfileDataStore implements ProfileInterface
 			FrequencyDatabase database = getFrequencyDatabase(variableName);
 			database.deleteAll();
 			distributionMap.remove(variableName);
-			broadcast(DISTRIBUTIONS_CHANGED, variableName);
+			broadcast(TYPE_DISTRIBUTIONS_CHANGED, variableName);
 		}
 		catch (NullPointerException e)
 		{}
@@ -137,7 +137,7 @@ public class ProfileDataStore implements ProfileInterface
 		{
 			variableMap.insertInto(this);
 		}
-		broadcast(DISTRIBUTIONS_CHANGED, question.getId());
+		broadcast(TYPE_DISTRIBUTIONS_CHANGED, question.getId());
 	}
 
 	/*
@@ -159,14 +159,14 @@ public class ProfileDataStore implements ProfileInterface
 	{
 		EventDatabase database = getEventDatabase(groupName);
 		database.add(entryTimeInMillis, event);
-		broadcast(EVENTS_CHANGED, groupName);
+		broadcast(TYPE_EVENTS_CHANGED, groupName);
 	}
 	
 	public void addEvent(final String groupName, final long entryTimeInMillis, final JSONObject event)
 	{
 		EventDatabase database = getEventDatabase(groupName);
 		database.add(entryTimeInMillis, event);
-		broadcast(EVENTS_CHANGED, groupName);
+		broadcast(TYPE_EVENTS_CHANGED, groupName);
 	}
 	
 	public void removeEventTable(final String groupName)
@@ -174,7 +174,7 @@ public class ProfileDataStore implements ProfileInterface
 		EventDatabase database = getEventDatabase(groupName);
 		database.deleteAll();
 		eventMap.remove(groupName);
-		broadcast(EVENTS_CHANGED, groupName);
+		broadcast(TYPE_EVENTS_CHANGED, groupName);
 	}
 	
 	public List<HashMap<String, String>> getEvents(final String groupName, final int daysInPast)
@@ -209,7 +209,7 @@ public class ProfileDataStore implements ProfileInterface
 	{
 		MapDatabase database = getMapDatabase(group);
 		database.set(name, value);
-		broadcast(MAPPINGS_CHANGED, group);
+		broadcast(TYPE_MAPPINGS_CHANGED, group);
 	}
 	
 	@Override

@@ -1,10 +1,10 @@
-package com.lathia.profilemanager.db.tables;
+package com.ubhave.profilemanager.db.tables;
 
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.lathia.profilemanager.data.Distribution;
+import com.ubhave.profilemanager.data.Distribution;
 
 public class FrequencyTable extends AbstractTable
 {

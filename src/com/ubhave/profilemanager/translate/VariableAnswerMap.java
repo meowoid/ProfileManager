@@ -1,10 +1,10 @@
-package com.lathia.profilemanager.translate;
+package com.ubhave.profilemanager.translate;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import com.lathia.profilemanager.ProfileDataStore;
+import com.ubhave.profilemanager.ProfileDataStore;
 
 public class VariableAnswerMap
 {

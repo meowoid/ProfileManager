@@ -1,9 +1,9 @@
-package com.lathia.profilemanager.db;
+package com.ubhave.profilemanager.db;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.lathia.profilemanager.db.tables.StringListTable;
+import com.ubhave.profilemanager.db.tables.StringListTable;
 
 public class VariableDatabase extends AbstractProfileDatabase
 {
