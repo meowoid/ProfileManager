@@ -41,6 +41,15 @@ The ```DistributionListAdapter``` requires:
 * ```TextView getLabelTextView(View row)```: the percentage part of the row. In the example above, if the distribution value for 'Bananas is 12, and the sum of all the 'Fruits' values is 24, this label will be set to '50%'.
 * ```ProgressBar getEntryProgressBar(View row)```: the progress bar that will, in our example, be set to 50% to visually show the value of the distribution.
 
+If you implemented the above in ```ExampleDistributionActivity```, you can then start the activity like this:
+
+```
+Intent intent = new Intent(context, ExampleDistributionActivity.class);
+context.startActivity(intent);
+```
+
+And the library will take care of loading and populating the view with the ```ProfileDataStore``` data.
+
 ### Data Events
 
 ### Data Mappings
