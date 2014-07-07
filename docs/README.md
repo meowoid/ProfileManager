@@ -2,11 +2,13 @@
 
 ### Using the Library
 
-The profile data store singleton is accessed:
+Add the library to your to your project. The profile data store singleton is accessed like this:
 
 ```
 ProfileDataStore profileManager = ProfileDataStore.getInstance(context);
 ```
+
+In order to add to and query from the data store.
 
 The key operations that you can do with it are defined in the [ProfileInterface](https://github.com/xsenselabs/ProfileManager/blob/master/src/com/ubhave/profilemanager/ProfileInterface.java) class.
 
