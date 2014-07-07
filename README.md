@@ -23,7 +23,7 @@ Read the library [docs](https://github.com/xsenselabs/ProfileManager/blob/master
 
 If you have any questions, please email [this google group](https://groups.google.com/forum/#!forum/es-library-developers).
 
-#### Research Using the Sensor Manager
+#### Research
 
 See [here](https://github.com/nlathia/SensorManager/blob/master/docs/research.md) for research papers that use one or more of the X-Sense libraries.
 
