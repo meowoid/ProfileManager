@@ -16,9 +16,10 @@ The library assumes that each distribution has a unique name (e.g., 'Fruits'). E
 
 ```
 ProfileDataStore profileManager = ProfileDataStore.getInstance(context);
-
 profileManager.addToDistribution('Fruits', 'Bananas', 12);
 ```
+
+To display a ```Distribution``` in your app, you need to extend the [DistributionActivity](https://github.com/xsenselabs/ProfileManager/blob/master/src/com/ubhave/profilemanager/ui/distribution/DistributionActivity.java) and [DistributionListAdapter](https://github.com/xsenselabs/ProfileManager/blob/master/src/com/ubhave/profilemanager/ui/distribution/DistributionListAdapter.java) classes.
 
 ### Data Events
 

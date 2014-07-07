@@ -40,7 +40,10 @@ public abstract class DistributionActivity extends AbstractProfileActivity
 
 	protected abstract String getDistributionVariableName();
 
-	protected abstract String getIntentKeyForDistributionData();
+	protected String getIntentKeyForDistributionData()
+	{
+		return null;
+	}
 
 	protected Distribution getDistribution()
 	{
