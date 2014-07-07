@@ -70,16 +70,19 @@ public class ProfileDataStore implements ProfileInterface
 	 * Variables that are stored in the profile
 	 */
 
+	@Override
 	public String[] getDistributionVariables()
 	{
 		return distributionMap.getVariables();
 	}
 	
+	@Override
 	public String[] getEventVariables()
 	{
 		return eventMap.getVariables();
 	}
 	
+	@Override
 	public boolean containsDistributionVariable(final String variableName)
 	{
 		return distributionMap.containsVariable(variableName);
@@ -100,6 +103,7 @@ public class ProfileDataStore implements ProfileInterface
 		return database;
 	}
 
+	@Override
 	public void addToDistribution(final String variableName, final String variableValue, final int variableFrequency)
 	{
 		FrequencyDatabase database = getFrequencyDatabase(variableName);
@@ -107,6 +111,7 @@ public class ProfileDataStore implements ProfileInterface
 		broadcast(TYPE_DISTRIBUTIONS_CHANGED, variableName);
 	}
 	
+	@Override
 	public void removeDistributionTable(final String variableName)
 	{
 		try
@@ -120,6 +125,7 @@ public class ProfileDataStore implements ProfileInterface
 		{}
 	}
 
+	@Override
 	public Distribution getDistribution(final String variableName)
 	{
 		FrequencyDatabase database = getFrequencyDatabase(variableName);
@@ -141,6 +147,7 @@ public class ProfileDataStore implements ProfileInterface
 		return database;
 	}
 	
+	@Override
 	public void addEvent(final String groupName, final long entryTimeInMillis, final HashMap<String, String> event)
 	{
 		EventDatabase database = getEventDatabase(groupName);
@@ -148,6 +155,7 @@ public class ProfileDataStore implements ProfileInterface
 		broadcast(TYPE_EVENTS_CHANGED, groupName);
 	}
 	
+	@Override
 	public void addEvent(final String groupName, final long entryTimeInMillis, final JSONObject event)
 	{
 		EventDatabase database = getEventDatabase(groupName);
@@ -155,6 +163,7 @@ public class ProfileDataStore implements ProfileInterface
 		broadcast(TYPE_EVENTS_CHANGED, groupName);
 	}
 	
+	@Override
 	public void removeEventTable(final String groupName)
 	{
 		EventDatabase database = getEventDatabase(groupName);
@@ -163,12 +172,14 @@ public class ProfileDataStore implements ProfileInterface
 		broadcast(TYPE_EVENTS_CHANGED, groupName);
 	}
 	
+	@Override
 	public List<HashMap<String, String>> getEvents(final String groupName, final int daysInPast)
 	{
 		EventDatabase database = getEventDatabase(groupName);
 		return database.getEvents(daysInPast);
 	}
 	
+	@Override
 	public int countEvents(final String groupName)
 	{
 		EventDatabase database = getEventDatabase(groupName);
