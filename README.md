@@ -17,7 +17,7 @@ Please note that this library has been built and tested using Android phones, an
 
 #### Using the Library
 
-See the library [usage](https://github.com/nlathia/SensorManager/blob/master/docs/usage.md) description, and the [ES-Library Examples](https://github.com/nlathia/ESLibrary-Examples) repository.
+Read the library [docs](https://github.com/xsenselabs/ProfileManager/blob/master/docs/), and the [Example App](https://github.com/xsenselabs/ExampleProfileManager) repository.
 
 #### Questions and Contact
 
