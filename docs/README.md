@@ -59,7 +59,7 @@ intent.putExtra('Fruits', distribution);
 context.startActivity(intent);
 ```
 
-If you follow this approach, you need to override the ```String getIntentKeyForDistributionData()``` to return, in this case, 'Fruits' (i.e., the key that you have used when adding the distribution to the intent.
+If you follow this approach, you need to override the ```String getIntentKeyForDistributionData()``` to return, in this case, 'Fruits' (i.e., the key that you have used when adding the distribution to the intent).
 
 ### Data Events
 
