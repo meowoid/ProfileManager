@@ -29,8 +29,8 @@ The ```DistributionActivity``` requires:
 
 * ```String getDistributionTitle()```: a String that is is displayed at the top of the UI as a title (e.g., 'Your Fruit Consumption').
 * ```String getDistributionVariableName()```: a String that is used to query the ```ProfileDataStore```. In the example above, this is 'Fruits'.
-* ```void onNoDataAvailable()```: what your app should do if the ```Distribution``` is empty. For example, it may ```finish()``` the activity.
-* ```View getNoDataView()```: the ```View``` to display should there be no ```Distribution``` data.
+* ```void onNoDataAvailable()```: what your app should do if the ```Distribution``` is empty. For example, it may ```finish()``` the activity, or display a ```Toast``` message.
+* ```View getNoDataView()```: the ```View``` to display should there be no ```Distribution``` data (if you are not ```finish()```'ing in ``onNoDataAvailable()```.
 * ```int getLayoutId()```: The layout id of your activity (i.e., R.layout.[your-layout]). This layout may contain the following items which will be automatically populated:
 * ```TextView getScreenTitle()```: is populated with the value of ```getDistributionTitle()```.
 * ```ListView getListView()```: is the ```ListView``` that actually displays the distribution.
@@ -50,7 +50,16 @@ Intent intent = new Intent(context, ExampleDistributionActivity.class);
 context.startActivity(intent);
 ```
 
-And the library will take care of loading and populating the view with the ```ProfileDataStore``` data.
+And the library will take care of loading and populating the view with the ```ProfileDataStore``` data. Alternatively, you can add the ```Distribution``` to the Intent:
+
+```
+Distribution distribution = ...
+Intent intent = new Intent(context, ExampleDistributionActivity.class);
+intent.putExtra('Fruits', distribution);
+context.startActivity(intent);
+```
+
+If you follow this approach, you need to override the ```String getIntentKeyForDistributionData()``` to return, in this case, 'Fruits' (i.e., the key that you have used when adding the distribution to the intent.
 
 ### Data Events
 
