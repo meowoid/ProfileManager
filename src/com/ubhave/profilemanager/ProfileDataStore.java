@@ -65,32 +65,23 @@ public class ProfileDataStore implements ProfileInterface
 		}
 		LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
 	}
+	
 
 	/*
-	 * Variables that are stored in the profile
+	 * Distribution Feedback: (Group Name, Variable Name, Variable Count)
 	 */
-
+	
 	@Override
-	public String[] getDistributionVariables()
+	public String[] getDistributions()
 	{
 		return distributionMap.getVariables();
 	}
 	
 	@Override
-	public String[] getEventVariables()
+	public boolean containsDistribution(final String groupName)
 	{
-		return eventMap.getVariables();
+		return distributionMap.containsVariable(groupName);
 	}
-	
-	@Override
-	public boolean containsDistributionVariable(final String variableName)
-	{
-		return distributionMap.containsVariable(variableName);
-	}
-
-	/*
-	 * Distribution Feedback: (Group Name, Variable Name, Variable Count)
-	 */
 	
 	private FrequencyDatabase getFrequencyDatabase(final String tableName)
 	{
@@ -136,6 +127,18 @@ public class ProfileDataStore implements ProfileInterface
 	 * Events: time stamped list of entries
 	 */
 	
+	@Override
+	public String[] getEventGroups()
+	{
+		return eventMap.getVariables();
+	}
+	
+	@Override
+	public boolean containsEventGroup(String groupName)
+	{
+		return eventMap.containsVariable(groupName);
+	}
+	
 	private EventDatabase getEventDatabase(final String tableName)
 	{
 		EventDatabase database = eventMap.get(tableName);
@@ -164,7 +167,7 @@ public class ProfileDataStore implements ProfileInterface
 	}
 	
 	@Override
-	public void removeEventTable(final String groupName)
+	public void removeEventGroup(final String groupName)
 	{
 		EventDatabase database = getEventDatabase(groupName);
 		database.deleteAll();

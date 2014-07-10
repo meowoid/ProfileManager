@@ -10,32 +10,30 @@ import com.ubhave.profilemanager.data.Distribution;
 public interface ProfileInterface
 {
 	/*
-	 * Variables that are stored in the profile
-	 */
-	public String[] getDistributionVariables();
-	public boolean containsDistributionVariable(final String variableName);
-	
-	public String[] getEventVariables();
-
-	/*
 	 * Storing distributions
 	 * Group Name | Variable Variable Name | Variable Value
 	 */
+	public String[] getDistributions();
+	public boolean containsDistribution(final String groupName);
 	
-	public Distribution getDistribution(final String variableName);
-	public void removeDistributionTable(final String variableName);
-	public void addToDistribution(final String variableName, final String variableValue, final int variableFrequency);
+	public Distribution getDistribution(final String groupName);
+	public void removeDistributionTable(final String groupName);
+	
+	public void addToDistribution(final String groupName, final String variableValue, final int variableFrequency);
 	
 	/*
 	 * Storing Events
 	 */
 	
-	public void removeEventTable(final String groupName);
+	public String[] getEventGroups();
+	public boolean containsEventGroup(final String groupName);
+
+	public List<HashMap<String, String>> getEvents(final String groupName, final int daysInPast);
+	public void removeEventGroup(final String groupName);
 	
 	public void addEvent(final String groupName, final long entryTimeInMillis, final HashMap<String, String> event);
 	public void addEvent(final String groupName, final long entryTimeInMillis, final JSONObject event);
 	
-	public List<HashMap<String, String>> getEvents(final String groupName, final int daysInPast);
 	public int countEvents(final String groupName);
 	
 	/*
