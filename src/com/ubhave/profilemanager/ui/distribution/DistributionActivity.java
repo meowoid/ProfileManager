@@ -1,103 +1,37 @@
 package com.ubhave.profilemanager.ui.distribution;
 
 import android.content.Intent;
-import android.os.Bundle;
-import android.view.View;
+import android.util.Log;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.ubhave.profilemanager.ProfileDataStore;
 import com.ubhave.profilemanager.data.Distribution;
 import com.ubhave.profilemanager.ui.AbstractProfileActivity;
+import com.ubhave.profilemanager.ui.LoadingThread;
 
 public abstract class DistributionActivity extends AbstractProfileActivity
 {
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState)
-	{
-		super.onCreate(savedInstanceState);
-		overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
-		String title = getDistributionTitle();
-		if (title != null)
-		{
-			TextView textView = getScreenTitle();
-			if (textView != null)
-			{
-				textView.setText(title);
-			}
-		}
-	}
-	
-	@Override
-	public void onResume()
-	{
-		super.onResume();
-		loadData(getIntent());
-	}
+	protected abstract DistributionListAdapter getAdapter(final Distribution distribution);
 
-	protected abstract String getDistributionTitle();
-
-	protected abstract String getDistributionVariableName();
+	protected String getDistributionVariableName()
+	{
+		return null;
+	}
 
 	protected String getIntentKeyForDistributionData()
 	{
 		return null;
 	}
 
-	protected Distribution getDistribution()
-	{
-		String intentKey = getIntentKeyForDistributionData();
-		if (intentKey != null)
-		{
-			Intent intent = getIntent();
-			if (intent.hasCategory(intentKey))
-			{
-				return intent.getParcelableExtra(intentKey);
-			}
-		}
-		return null;
-	}
-	
-	private void showLoading(final boolean isLoading)
-	{
-		runOnUiThread(new Runnable()
-		{
-
-			@Override
-			public void run()
-			{
-				showLoadingInto(getLoadingProgressBar(), getListView(), isLoading);
-			}
-		});
-	}
-	
-	private void showNoDataView(final int visibility)
-	{
-		runOnUiThread(new Runnable()
-		{
-
-			@Override
-			public void run()
-			{
-				View noData = getNoDataView();
-				if (noData != null)
-				{
-					noData.setVisibility(visibility);
-				}
-			}
-		});
-	}
-	
 	private void updateListView(final Distribution distribution)
 	{
-		runOnUiThread(new Runnable()
+		if (distribution != null)
 		{
-
-			@Override
-			public void run()
+			runOnUiThread(new Runnable()
 			{
-				if (distribution != null)
+				@Override
+				public void run()
 				{
 					ListView listView = getListView();
 					if (listView != null)
@@ -110,42 +44,56 @@ public abstract class DistributionActivity extends AbstractProfileActivity
 						}
 						listView.setAdapter(getAdapter(distribution));
 					}
-					showNoDataView(View.GONE);
+				}
+			});
+		}
+	}
+
+	@Override
+	protected void loadData()
+	{
+		new LoadingThread(this)
+		{
+			@Override
+			protected boolean loadData()
+			{
+				Distribution distribution = loadDistribution();
+				if (distribution != null)
+				{
+					updateListView(distribution);
+					return true;
 				}
 				else
 				{
-					showNoDataView(View.VISIBLE);
-					onNoDataAvailable();
+					return false;
 				}
 			}
-		});
-	}
 
-	protected void loadData(final Intent intent)
-	{
-		new Thread()
-		{
-			@Override
-			public void run()
+			private Distribution getDistributionFromIntent()
 			{
-				onPreExecute();
-				Distribution distribution = doInBackground();
-				onPostExecute(distribution);
-			}
-			
-			protected void onPreExecute()
-			{
-				showNoDataView(View.GONE);
-				showLoading(true);
+				String intentKey = getIntentKeyForDistributionData();
+				if (intentKey != null)
+				{
+					Intent intent = getIntent();
+					if (intent.hasCategory(intentKey))
+					{
+						return intent.getParcelableExtra(intentKey);
+					}
+				}
+				return null;
 			}
 
-			protected Distribution doInBackground()
+			private Distribution loadDistribution()
 			{
-				Distribution distribution = getDistribution();
+				Log.d(LOG_TAG, "Attempt load from intent.");
+				Distribution distribution = getDistributionFromIntent();
 				if (distribution == null)
 				{
+					Log.d(LOG_TAG, "Attempt load from data store.");
 					ProfileDataStore profileManager = ProfileDataStore.getInstance(DistributionActivity.this);
 					String variableName = getDistributionVariableName();
+					
+					Log.d(LOG_TAG, "Distribution: "+variableName);
 					if (variableName != null)
 					{
 						if (profileManager.containsDistribution(variableName))
@@ -156,28 +104,6 @@ public abstract class DistributionActivity extends AbstractProfileActivity
 				}
 				return distribution;
 			}
-
-			protected void onPostExecute(Distribution distribution)
-			{
-				updateListView(distribution);
-				showLoading(false);
-				if (distribution != null)
-				{
-					showNoDataView(View.GONE);
-				}
-				else
-				{
-					showNoDataView(View.VISIBLE);
-				}
-			}
 		}.start();
 	}
-	
-	protected abstract void onNoDataAvailable();
-
-	protected abstract DistributionListAdapter getAdapter(Distribution distribution);
-
-	protected abstract TextView getScreenTitle();
-
-	protected abstract View getNoDataView();
 }
