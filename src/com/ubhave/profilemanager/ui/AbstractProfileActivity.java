@@ -55,6 +55,10 @@ public abstract class AbstractProfileActivity extends Activity
 				setVisibility(getLoadingProgressBar(), status == LOADING ? View.VISIBLE : View.GONE);
 				setVisibility(getListView(), status == LOADED_SUCCESS ? View.VISIBLE : View.GONE);
 				setVisibility(getNoDataView(), status == LOADED_FAIL ? View.VISIBLE : View.GONE);
+				if (status == LOADED_FAIL)
+				{
+					onNoDataAvailable();
+				}
 			}
 		});
 	}
@@ -63,7 +67,6 @@ public abstract class AbstractProfileActivity extends Activity
 	{
 		runOnUiThread(new Runnable()
 		{
-
 			@Override
 			public void run()
 			{

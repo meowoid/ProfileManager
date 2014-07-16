@@ -17,10 +17,10 @@ public abstract class LoadingThread extends Thread
 	{
 		Log.d(LOG_TAG, "Set UI to loading.");
 		ui.set(AbstractProfileActivity.LOADING);
-		boolean successfulLoad = loadData();
+		boolean loadedData = loadData();
 		
-		Log.d(LOG_TAG, "Load successful = "+successfulLoad+", reset UI.");
-		ui.set(successfulLoad ? AbstractProfileActivity.LOADED_SUCCESS : AbstractProfileActivity.LOADED_FAIL);
+		Log.d(LOG_TAG, "Load successful = "+loadedData+", reset UI.");
+		ui.set(loadedData ? AbstractProfileActivity.LOADED_SUCCESS : AbstractProfileActivity.LOADED_FAIL);
 		Log.d(LOG_TAG, "Done.");
 	}
 	
