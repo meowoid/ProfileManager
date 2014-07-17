@@ -23,43 +23,13 @@ profileManager.addToDistribution('Fruits', 'Bananas', 12);
 
 Will add 12 units to the 'Bananas' entry of the 'Fruits' distribution (note: this is adding, not setting!).
 
-To display a ```Distribution``` in your app, you need to extend the [DistributionActivity](https://github.com/xsenselabs/ProfileManager/blob/master/src/com/ubhave/profilemanager/ui/distribution/DistributionActivity.java) and [DistributionListAdapter](https://github.com/xsenselabs/ProfileManager/blob/master/src/com/ubhave/profilemanager/ui/distribution/DistributionListAdapter.java) classes. These are abstract classes that implement the functionality of asynchronously loading and displaying a distribution.
+There are two ways that you can display a ```Distribution``` in your app:
 
-The ```DistributionActivity``` requires:
+* You can (dynamically) create a Distribution, and pass it to your Activity via an Intent. Your Activity has to extend ```AbstractIntentDistributionActivity```.
+* You can start an Activity that queries the ```ProfileDataStore``` for a distribution. Your Activity has to extend ```AbstractStoredDistributionActivity```.
 
-* ```String getDistributionTitle()```: a String that is is displayed at the top of the UI as a title (e.g., 'Your Fruit Consumption').
-* ```String getDistributionVariableName()```: a String that is used to query the ```ProfileDataStore```. In the example above, this is 'Fruits'.
-* ```void onNoDataAvailable()```: what your app should do if the ```Distribution``` is empty. For example, it may ```finish()``` the activity, or display a ```Toast``` message.
-* ```View getNoDataView()```: the ```View``` to display should there be no ```Distribution``` data (if you are not ```finish()```'ing in ``onNoDataAvailable()```.
-* ```int getLayoutId()```: The layout id of your activity (i.e., R.layout.[your-layout]). This layout may contain the following items which will be automatically populated:
-* ```TextView getScreenTitle()```: is populated with the value of ```getDistributionTitle()```.
-* ```ListView getListView()```: is the ```ListView``` that actually displays the distribution.
-* ```ProgressBar getLoadingProgressBar()```: the ```ProgressBar``` to display while the distribution is being loaded from the database.
+Both of these abstract views take care of asynchronously loading the data into a ListView. The adapter that your ListView uses has to extend ```DistributionListAdapter```.
 
-The ```DistributionListAdapter``` requires:
-
-* (Constructor): the layout that will be inflated for list items (i.e., R.layout.[your-layout]).
-* ```TextView getEntryText(View row)```: the label part of the row. In the example above, it would be set to 'Bananas'.
-* ```TextView getLabelTextView(View row)```: the percentage part of the row. In the example above, if the distribution value for 'Bananas is 12, and the sum of all the 'Fruits' values is 24, this label will be set to '50%'.
-* ```ProgressBar getEntryProgressBar(View row)```: the progress bar that will, in our example, be set to 50% to visually show the value of the distribution.
-
-If you implemented the above in ```ExampleDistributionActivity```, you can then start the activity like this:
-
-```
-Intent intent = new Intent(context, ExampleDistributionActivity.class);
-context.startActivity(intent);
-```
-
-And the library will take care of loading and populating the view with the ```ProfileDataStore``` data. Alternatively, you can add the ```Distribution``` to the Intent:
-
-```
-Distribution distribution = ...
-Intent intent = new Intent(context, ExampleDistributionActivity.class);
-intent.putExtra('Fruits', distribution);
-context.startActivity(intent);
-```
-
-If you follow this approach, you need to override the ```String getIntentKeyForDistributionData()``` to return, in this case, 'Fruits' (i.e., the key that you have used when adding the distribution to the intent).
 
 ### Data Events
 

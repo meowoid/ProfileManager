@@ -5,7 +5,7 @@ import android.util.Log;
 public abstract class LoadingThread extends Thread
 {
 	protected final static String LOG_TAG = "Profile-Load";
-	private final AbstractProfileActivity ui;
+	protected final AbstractProfileActivity ui;
 	
 	public LoadingThread(final AbstractProfileActivity ui)
 	{

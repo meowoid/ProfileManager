@@ -20,6 +20,7 @@ public abstract class AbstractProfileActivity extends Activity
 		overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
 		setContentView(getLayoutId());
 		setTitle();
+		
 		set(LOADING);
 		loadData();
 	}
@@ -62,22 +63,6 @@ public abstract class AbstractProfileActivity extends Activity
 			}
 		});
 	}
-
-	protected void showNoDataView(final int visibility)
-	{
-		runOnUiThread(new Runnable()
-		{
-			@Override
-			public void run()
-			{
-				View noData = getNoDataView();
-				if (noData != null)
-				{
-					noData.setVisibility(visibility);
-				}
-			}
-		});
-	}
 	
 	protected abstract TextView getScreenTitleView();
 
@@ -91,7 +76,7 @@ public abstract class AbstractProfileActivity extends Activity
 
 	protected abstract View getNoDataView();
 
-	protected abstract ListView getListView();
+	public abstract ListView getListView();
 
 	protected abstract ProgressBar getLoadingProgressBar();
 
