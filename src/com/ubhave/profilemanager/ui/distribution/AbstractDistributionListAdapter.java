@@ -11,13 +11,13 @@ import android.widget.TextView;
 
 import com.ubhave.profilemanager.data.Distribution;
 
-public abstract class DistributionListAdapter extends ArrayAdapter<String>
+public abstract class AbstractDistributionListAdapter extends ArrayAdapter<String>
 {
 	private final Distribution data;
 	private final int frequencySum, layoutId;
 	private final DecimalFormat formatter;
 
-	public DistributionListAdapter(Context context, final Distribution data, int layoutId)
+	public AbstractDistributionListAdapter(Context context, final Distribution data, int layoutId)
 	{
 		super(context, layoutId, data.getKeys());
 		this.data = data;

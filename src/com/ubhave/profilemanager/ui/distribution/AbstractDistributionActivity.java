@@ -5,5 +5,5 @@ import com.ubhave.profilemanager.ui.AbstractProfileActivity;
 
 public abstract class AbstractDistributionActivity extends AbstractProfileActivity
 {
-	public abstract DistributionListAdapter getAdapter(final Distribution distribution);	
+	public abstract AbstractDistributionListAdapter getAdapter(final Distribution distribution);	
 }

@@ -6,7 +6,13 @@ import com.ubhave.profilemanager.data.Distribution;
 
 public abstract class AbstractIntentDistributionActivity extends AbstractDistributionActivity
 {
-	protected abstract String getIntentKeyForDistributionData();
+	public final static String DISTRIBUTION_KEY = "distribution";
+	
+	protected String getIntentKeyForDistributionData()
+	{
+		// Override this to set your own intent key
+		return DISTRIBUTION_KEY;
+	}
 
 	@Override
 	protected void loadData()
