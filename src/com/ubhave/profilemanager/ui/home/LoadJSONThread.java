@@ -1,4 +1,4 @@
-package com.ubhave.profilemanager.ui.list;
+package com.ubhave.profilemanager.ui.home;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;

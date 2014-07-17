@@ -1,4 +1,4 @@
-package com.ubhave.profilemanager.ui.list;
+package com.ubhave.profilemanager.ui.home;
 
 import java.util.List;
 
@@ -33,7 +33,6 @@ public abstract class AbstractProfileListAdapter extends ArrayAdapter<ProfileEnt
 		{
 			textView.setText(entry.getDisplayText());
 		}
-		
 		return row;
 	}
 
