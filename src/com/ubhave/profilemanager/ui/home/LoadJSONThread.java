@@ -92,6 +92,7 @@ public class LoadJSONThread extends LoadingThread
 							adapter.notifyDataSetChanged();
 						}
 						listView.setAdapter(profileHome.getAdapter(data));
+						listView.setOnItemClickListener(profileHome.getOnItemClickListener(data));
 					}
 				}
 			});

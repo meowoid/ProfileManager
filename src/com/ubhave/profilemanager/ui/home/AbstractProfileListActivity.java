@@ -2,6 +2,10 @@ package com.ubhave.profilemanager.ui.home;
 
 import java.util.ArrayList;
 
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+
 import com.ubhave.profilemanager.ui.AbstractProfileActivity;
 
 public abstract class AbstractProfileListActivity extends AbstractProfileActivity
@@ -27,4 +31,18 @@ public abstract class AbstractProfileListActivity extends AbstractProfileActivit
 	}
 
 	protected abstract AbstractProfileListAdapter getAdapter(final ArrayList<ProfileEntry> data);
+	
+	protected abstract void onItemClicked(final ProfileEntry entry);
+	
+	public OnItemClickListener getOnItemClickListener(final ArrayList<ProfileEntry> data)
+	{
+		return new OnItemClickListener()
+		{
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+			{
+				onItemClicked(data.get(position));
+			}
+		};
+	}
 }
