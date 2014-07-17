@@ -43,7 +43,7 @@ public abstract class LoadDistributionThread extends LoadingThread
 					ListView listView = distributionUI.getListView();
 					if (listView != null)
 					{
-						DistributionListAdapter adapter = (DistributionListAdapter) listView.getAdapter();
+						AbstractDistributionListAdapter adapter = (AbstractDistributionListAdapter) listView.getAdapter();
 						if (adapter != null)
 						{
 							adapter.clear();
