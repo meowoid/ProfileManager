@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
 
 import com.ubhave.profilemanager.ui.AbstractProfileActivity;
 
@@ -34,6 +35,8 @@ public abstract class AbstractProfileListActivity extends AbstractProfileActivit
 	
 	protected abstract void onItemClicked(final ProfileEntry entry);
 	
+	protected abstract void onItemLongClicked(final ProfileEntry entry);
+	
 	public OnItemClickListener getOnItemClickListener(final ArrayList<ProfileEntry> data)
 	{
 		return new OnItemClickListener()
@@ -42,6 +45,19 @@ public abstract class AbstractProfileListActivity extends AbstractProfileActivit
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id)
 			{
 				onItemClicked(data.get(position));
+			}
+		};
+	}
+	
+	public OnItemLongClickListener getOnItemLongClickListener(final ArrayList<ProfileEntry> data)
+	{
+		return new OnItemLongClickListener()
+		{
+			@Override
+			public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id)
+			{
+				onItemLongClicked(data.get(position));
+				return true;
 			}
 		};
 	}

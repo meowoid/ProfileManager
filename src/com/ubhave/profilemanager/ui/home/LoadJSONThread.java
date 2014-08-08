@@ -5,15 +5,18 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
 
 import com.ubhave.profilemanager.ui.LoadingThread;
 
 public class LoadJSONThread extends LoadingThread
 {
-	private ArrayList<ProfileEntry> data;
+	protected ArrayList<ProfileEntry> data;
 
 	public LoadJSONThread(final AbstractProfileListActivity ui)
 	{
@@ -32,7 +35,7 @@ public class LoadJSONThread extends LoadingThread
 			data = new ArrayList<ProfileEntry>();
 			for (int i = 0; i < profile.length(); i++)
 			{
-				data.add(new ProfileEntry((JSONObject) profile.get(i)));
+				data.add(build((JSONObject) profile.get(i)));
 			}
 
 			return true;
@@ -42,6 +45,11 @@ public class LoadJSONThread extends LoadingThread
 			e.printStackTrace();
 			return false;
 		}
+	}
+	
+	protected ProfileEntry build(JSONObject json) throws JSONException
+	{
+		return new ProfileEntry(json);
 	}
 
 	public String loadFileContents() throws Exception
@@ -85,7 +93,18 @@ public class LoadJSONThread extends LoadingThread
 				adapter.notifyDataSetChanged();
 			}
 			listView.setAdapter(profileHome.getAdapter(data));
-			listView.setOnItemClickListener(profileHome.getOnItemClickListener(data));
+			
+			OnItemClickListener clickListener = profileHome.getOnItemClickListener(data);
+			if (clickListener != null)
+			{
+				listView.setOnItemClickListener(clickListener);
+			}
+			
+			OnItemLongClickListener holdListener = profileHome.getOnItemLongClickListener(data);
+			if (holdListener != null)
+			{
+				listView.setOnItemLongClickListener(holdListener);
+			}
 		}
 	}
 }
