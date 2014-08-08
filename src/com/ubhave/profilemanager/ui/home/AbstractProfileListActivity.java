@@ -10,8 +10,8 @@ import com.ubhave.profilemanager.ui.AbstractProfileActivity;
 
 public abstract class AbstractProfileListActivity extends AbstractProfileActivity
 {
-	private final static String CONFIG_FILE_NAME = "profile-list.json";
-	private final static String PROFILE_LIST_KEY = "profile";
+	public final static String CONFIG_FILE_NAME = "profile-list.json";
+	public final static String PROFILE_LIST_KEY = "profile";
 
 	public String getJSONConfigFileName()
 	{

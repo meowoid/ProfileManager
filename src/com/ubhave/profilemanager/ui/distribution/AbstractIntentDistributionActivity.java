@@ -1,13 +1,16 @@
 package com.ubhave.profilemanager.ui.distribution;
 
-import android.content.Intent;
+import java.util.HashMap;
 
-import com.ubhave.profilemanager.data.Distribution;
+import android.content.Intent;
+import android.util.Log;
+
+import com.ubhave.profilemanager.data.FrequencyDistribution;
 
 public abstract class AbstractIntentDistributionActivity extends AbstractDistributionActivity
 {
 	public final static String DISTRIBUTION_KEY = "distribution";
-	
+
 	protected String getIntentKeyForDistributionData()
 	{
 		// Override this to set your own intent key
@@ -19,18 +22,30 @@ public abstract class AbstractIntentDistributionActivity extends AbstractDistrib
 	{
 		new LoadDistributionThread(this)
 		{
-			protected Distribution loadDistribution()
+			@SuppressWarnings("unchecked")
+			protected FrequencyDistribution loadDistribution()
 			{
+				FrequencyDistribution distribution = null;
 				String intentKey = getIntentKeyForDistributionData();
 				if (intentKey != null)
 				{
 					Intent intent = getIntent();
-					if (intent.hasCategory(intentKey))
+					if (intent.hasExtra(intentKey))
 					{
-						return intent.getParcelableExtra(intentKey);
+						HashMap<String, Integer> values = (HashMap<String, Integer>) intent.getSerializableExtra(intentKey);
+						distribution = new FrequencyDistribution(values);
+						Log.d("Profile", "loaded is null: "+(distribution==null));
+					}
+					else
+					{
+						Log.d("Profile", "Intent is missing: "+intentKey);
 					}
 				}
-				return null;
+				else
+				{
+					Log.d("Profile", intentKey+" is null");
+				}
+				return distribution;
 			}
 		}.start();
 	}

@@ -77,6 +77,8 @@ public abstract class AbstractProfileActivity extends Activity
 	protected abstract View getNoDataView();
 
 	public abstract ListView getListView();
+	
+	public abstract View getListViewHeader();
 
 	protected abstract ProgressBar getLoadingProgressBar();
 

@@ -4,7 +4,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 
-import com.ubhave.profilemanager.data.Distribution;
+import com.ubhave.profilemanager.data.FrequencyDistribution;
 import com.ubhave.profilemanager.db.tables.FrequencyTable;
 
 public class FrequencyDatabase extends AbstractProfileDatabase
@@ -21,10 +21,10 @@ public class FrequencyDatabase extends AbstractProfileDatabase
 		database.close();
 	}
 	
-	public Distribution getDistribution()
+	public FrequencyDistribution getDistribution()
 	{
 		SQLiteDatabase database = getReadableDatabase();
-		Distribution distribution;
+		FrequencyDistribution distribution;
 		try
 		{
 			distribution = ((FrequencyTable) table).getDistribution(database);

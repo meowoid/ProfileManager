@@ -2,11 +2,12 @@ package com.ubhave.profilemanager.ui.distribution;
 
 import android.widget.ListView;
 
-import com.ubhave.profilemanager.data.Distribution;
+import com.ubhave.profilemanager.data.FrequencyDistribution;
 import com.ubhave.profilemanager.ui.LoadingThread;
 
 public abstract class LoadDistributionThread extends LoadingThread
 {
+	private FrequencyDistribution distribution;
 	
 	public LoadDistributionThread(final AbstractDistributionActivity ui)
 	{
@@ -16,43 +17,25 @@ public abstract class LoadDistributionThread extends LoadingThread
 	@Override
 	protected boolean loadData()
 	{
-		Distribution distribution = loadDistribution();
-		if (distribution != null)
-		{
-			updateListView(distribution);
-			return true;
-		}
-		else
-		{
-			return false;
-		}
+		distribution = loadDistribution();
+		return (distribution != null);
 	}
 	
-	protected abstract Distribution loadDistribution();
+	protected abstract FrequencyDistribution loadDistribution();
 	
-	private void updateListView(final Distribution distribution)
+	@Override
+	protected void updateListView(final ListView listView)
 	{
 		if (distribution != null)
 		{
-			ui.runOnUiThread(new Runnable()
+			AbstractDistributionActivity distributionUI = (AbstractDistributionActivity) ui;
+			AbstractDistributionListAdapter adapter = (AbstractDistributionListAdapter) listView.getAdapter();
+			if (adapter != null)
 			{
-				@Override
-				public void run()
-				{
-					AbstractDistributionActivity distributionUI = (AbstractDistributionActivity) ui;
-					ListView listView = distributionUI.getListView();
-					if (listView != null)
-					{
-						AbstractDistributionListAdapter adapter = (AbstractDistributionListAdapter) listView.getAdapter();
-						if (adapter != null)
-						{
-							adapter.clear();
-							adapter.notifyDataSetChanged();
-						} 
-						listView.setAdapter(distributionUI.getAdapter(distribution));
-					}
-				}
-			});
+				adapter.clear();
+				adapter.notifyDataSetChanged();
+			} 
+			listView.setAdapter(distributionUI.getAdapter(distribution));
 		}
 	}
 }

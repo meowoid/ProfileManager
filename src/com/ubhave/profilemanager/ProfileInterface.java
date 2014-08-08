@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.json.JSONObject;
 
-import com.ubhave.profilemanager.data.Distribution;
+import com.ubhave.profilemanager.data.FrequencyDistribution;
 
 public interface ProfileInterface
 {
@@ -16,7 +16,7 @@ public interface ProfileInterface
 	public String[] getDistributions();
 	public boolean containsDistribution(final String groupName);
 	
-	public Distribution getDistribution(final String groupName);
+	public FrequencyDistribution getDistribution(final String groupName);
 	public void removeDistributionTable(final String groupName);
 	
 	public void addToDistribution(final String groupName, final String variableValue, final int variableFrequency);

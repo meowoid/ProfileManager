@@ -13,6 +13,7 @@ import com.ubhave.profilemanager.ui.LoadingThread;
 
 public class LoadJSONThread extends LoadingThread
 {
+	private ArrayList<ProfileEntry> data;
 
 	public LoadJSONThread(final AbstractProfileListActivity ui)
 	{
@@ -28,13 +29,12 @@ public class LoadJSONThread extends LoadingThread
 			String profileKey = ((AbstractProfileListActivity) ui).getProfileListKey();
 			JSONArray profile = config.getJSONArray(profileKey);
 
-			ArrayList<ProfileEntry> data = new ArrayList<ProfileEntry>();
+			data = new ArrayList<ProfileEntry>();
 			for (int i = 0; i < profile.length(); i++)
 			{
 				data.add(new ProfileEntry((JSONObject) profile.get(i)));
 			}
 
-			updateListView(data);
 			return true;
 		}
 		catch (Exception e)
@@ -72,30 +72,20 @@ public class LoadJSONThread extends LoadingThread
 		return fileContents.toString();
 	}
 
-	private void updateListView(final ArrayList<ProfileEntry> data)
+	@Override
+	protected void updateListView(final ListView listView)
 	{
 		if (data != null)
 		{
-			ui.runOnUiThread(new Runnable()
+			AbstractProfileListActivity profileHome = (AbstractProfileListActivity) ui;
+			AbstractProfileListAdapter adapter = (AbstractProfileListAdapter) listView.getAdapter();
+			if (adapter != null)
 			{
-				@Override
-				public void run()
-				{
-					AbstractProfileListActivity profileHome = (AbstractProfileListActivity) ui;
-					ListView listView = profileHome.getListView();
-					if (listView != null)
-					{
-						AbstractProfileListAdapter adapter = (AbstractProfileListAdapter) listView.getAdapter();
-						if (adapter != null)
-						{
-							adapter.clear();
-							adapter.notifyDataSetChanged();
-						}
-						listView.setAdapter(profileHome.getAdapter(data));
-						listView.setOnItemClickListener(profileHome.getOnItemClickListener(data));
-					}
-				}
-			});
+				adapter.clear();
+				adapter.notifyDataSetChanged();
+			}
+			listView.setAdapter(profileHome.getAdapter(data));
+			listView.setOnItemClickListener(profileHome.getOnItemClickListener(data));
 		}
 	}
 }

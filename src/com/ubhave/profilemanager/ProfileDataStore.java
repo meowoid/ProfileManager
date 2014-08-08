@@ -9,7 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v4.content.LocalBroadcastManager;
 
-import com.ubhave.profilemanager.data.Distribution;
+import com.ubhave.profilemanager.data.FrequencyDistribution;
 import com.ubhave.profilemanager.db.EventDatabase;
 import com.ubhave.profilemanager.db.FrequencyDatabase;
 import com.ubhave.profilemanager.db.MapDatabase;
@@ -117,7 +117,7 @@ public class ProfileDataStore implements ProfileInterface
 	}
 
 	@Override
-	public Distribution getDistribution(final String variableName)
+	public FrequencyDistribution getDistribution(final String variableName)
 	{
 		FrequencyDatabase database = getFrequencyDatabase(variableName);
 		return database.getDistribution();

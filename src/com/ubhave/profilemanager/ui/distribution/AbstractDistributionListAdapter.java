@@ -9,15 +9,15 @@ import android.widget.ArrayAdapter;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.ubhave.profilemanager.data.Distribution;
+import com.ubhave.profilemanager.data.FrequencyDistribution;
 
 public abstract class AbstractDistributionListAdapter extends ArrayAdapter<String>
 {
-	private final Distribution data;
+	private final FrequencyDistribution data;
 	private final int frequencySum, layoutId;
 	private final DecimalFormat formatter;
 
-	public AbstractDistributionListAdapter(Context context, final Distribution data, int layoutId)
+	public AbstractDistributionListAdapter(Context context, final FrequencyDistribution data, int layoutId)
 	{
 		super(context, layoutId, data.getKeys());
 		this.data = data;

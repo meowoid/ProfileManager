@@ -4,7 +4,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.ubhave.profilemanager.data.Distribution;
+import com.ubhave.profilemanager.data.FrequencyDistribution;
 
 public class FrequencyTable extends AbstractTable
 {
@@ -70,12 +70,12 @@ public class FrequencyTable extends AbstractTable
 		return NOT_FOUND;
 	}
 	
-	public Distribution getDistribution(final SQLiteDatabase database)
+	public FrequencyDistribution getDistribution(final SQLiteDatabase database)
 	{
 		Cursor cursor = database.query(tableName, null, null, null, null, null, null);
 		if (cursor != null)
 		{
-			Distribution result = new Distribution();
+			FrequencyDistribution result = new FrequencyDistribution();
 			int variableNameIndex = cursor.getColumnIndex(variableName);
 			int variableValueIndex = cursor.getColumnIndex(variableFrequency);
 			cursor.moveToFirst();

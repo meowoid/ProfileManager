@@ -1,7 +1,7 @@
 package com.ubhave.profilemanager.ui.distribution;
 
 import com.ubhave.profilemanager.ProfileDataStore;
-import com.ubhave.profilemanager.data.Distribution;
+import com.ubhave.profilemanager.data.FrequencyDistribution;
 
 public abstract class AbstractStoredDistributionActivity extends AbstractDistributionActivity
 {
@@ -12,9 +12,9 @@ public abstract class AbstractStoredDistributionActivity extends AbstractDistrib
 	{
 		new LoadDistributionThread(this)
 		{
-			protected Distribution loadDistribution()
+			protected FrequencyDistribution loadDistribution()
 			{
-				Distribution distribution = null;
+				FrequencyDistribution distribution = null;
 				ProfileDataStore profileManager = ProfileDataStore.getInstance(ui);
 				String variableName = getDistributionVariableName();
 				
