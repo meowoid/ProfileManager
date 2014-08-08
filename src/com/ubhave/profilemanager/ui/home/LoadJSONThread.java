@@ -81,7 +81,7 @@ public class LoadJSONThread extends LoadingThread
 	}
 
 	@Override
-	protected void updateListView(final ListView listView)
+	protected void updateListView(final ListView listView, final boolean hasHeader)
 	{
 		if (data != null)
 		{
@@ -94,13 +94,13 @@ public class LoadJSONThread extends LoadingThread
 			}
 			listView.setAdapter(profileHome.getAdapter(data));
 			
-			OnItemClickListener clickListener = profileHome.getOnItemClickListener(data);
+			OnItemClickListener clickListener = profileHome.getOnItemClickListener(data, hasHeader);
 			if (clickListener != null)
 			{
 				listView.setOnItemClickListener(clickListener);
 			}
 			
-			OnItemLongClickListener holdListener = profileHome.getOnItemLongClickListener(data);
+			OnItemLongClickListener holdListener = profileHome.getOnItemLongClickListener(data, hasHeader);
 			if (holdListener != null)
 			{
 				listView.setOnItemLongClickListener(holdListener);

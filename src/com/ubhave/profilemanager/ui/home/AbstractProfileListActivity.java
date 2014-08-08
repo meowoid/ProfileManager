@@ -37,25 +37,33 @@ public abstract class AbstractProfileListActivity extends AbstractProfileActivit
 	
 	protected abstract void onItemLongClicked(final ProfileEntry entry);
 	
-	public OnItemClickListener getOnItemClickListener(final ArrayList<ProfileEntry> data)
+	public OnItemClickListener getOnItemClickListener(final ArrayList<ProfileEntry> data, final boolean hasHeader)
 	{
 		return new OnItemClickListener()
 		{
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id)
 			{
+				if (hasHeader)
+				{
+					position --;
+				}
 				onItemClicked(data.get(position));
 			}
 		};
 	}
 	
-	public OnItemLongClickListener getOnItemLongClickListener(final ArrayList<ProfileEntry> data)
+	public OnItemLongClickListener getOnItemLongClickListener(final ArrayList<ProfileEntry> data, final boolean hasHeader)
 	{
 		return new OnItemLongClickListener()
 		{
 			@Override
 			public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id)
 			{
+				if (hasHeader)
+				{
+					position --;
+				}
 				onItemLongClicked(data.get(position));
 				return true;
 			}

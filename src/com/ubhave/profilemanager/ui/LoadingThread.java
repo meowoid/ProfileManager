@@ -43,20 +43,21 @@ public abstract class LoadingThread extends Thread
 			@Override
 			public void run()
 			{
-				updateListView(listView);
-				addHeader(listView);
+				boolean hasHeader = addHeader(listView);
+				updateListView(listView, hasHeader);
 			}
 		});
 	}
 
-	protected abstract void updateListView(final ListView listView);
+	protected abstract void updateListView(final ListView listView, final boolean hasHeader);
 
-	protected void addHeader(final ListView listView)
+	protected boolean addHeader(final ListView listView)
 	{
 		View header = ui.getListViewHeader();
 		if (header != null)
 		{
-			listView.addHeaderView(header);
+			listView.addHeaderView(header, null, false);
 		}
+		return (header != null);
 	}
 }

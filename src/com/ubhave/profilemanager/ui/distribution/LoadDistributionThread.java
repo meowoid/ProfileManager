@@ -24,7 +24,7 @@ public abstract class LoadDistributionThread extends LoadingThread
 	protected abstract FrequencyDistribution loadDistribution();
 	
 	@Override
-	protected void updateListView(final ListView listView)
+	protected void updateListView(final ListView listView, final boolean hasHeader)
 	{
 		if (distribution != null)
 		{
