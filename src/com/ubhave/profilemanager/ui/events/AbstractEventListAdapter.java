@@ -1,29 +1,21 @@
 package com.ubhave.profilemanager.ui.events;
 
-import java.text.DecimalFormat;
+import java.util.HashMap;
+import java.util.List;
 
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 
-import com.ubhave.profilemanager.data.FrequencyDistribution;
-
-public abstract class AbstractEventListAdapter extends ArrayAdapter<String>
+public abstract class AbstractEventListAdapter extends ArrayAdapter<HashMap<String, String>>
 {
-	private final FrequencyDistribution data;
-	private final int frequencySum, layoutId;
-	private final DecimalFormat formatter;
+	private final int layoutId;
 
-	public AbstractEventListAdapter(Context context, final FrequencyDistribution data, int layoutId)
+	public AbstractEventListAdapter(Context context, final List<HashMap<String, String>> data, int layoutId)
 	{
-		super(context, layoutId, data.getKeys());
-		this.data = data;
-		this.frequencySum = data.frequencySum();
+		super(context, layoutId, data);
 		this.layoutId = layoutId;
-		this.formatter = new DecimalFormat("#.##");
 	}
 
 	@Override
@@ -34,32 +26,14 @@ public abstract class AbstractEventListAdapter extends ArrayAdapter<String>
 		{
 			row = View.inflate(getContext(), layoutId, null);
 		}
-		String key = getItem(position);
-		getEntryText(row).setText(key);
-		ProgressBar progressBar = getEntryProgressBar(row);
-		progressBar.setMax(frequencySum);
-		progressBar.setProgress(data.get(key));
-
-		TextView progressLabel = getLabelTextView(row);
-		if (progressLabel != null)
+		
+		HashMap<String, String> entry = getItem(position);
+		for (String key : entry.keySet())
 		{
-			if (frequencySum > 0)
-			{
-				double percent = ((double) data.get(key) / frequencySum) * 100;
-				progressLabel.setText(formatter.format(percent)+"%");
-			}
-			else
-			{
-				progressLabel.setText("");
-			}
-			
+			setValue(key, entry.get(key));
 		}
 		return row;
 	}
-
-	protected abstract TextView getEntryText(View row);
-
-	protected abstract TextView getLabelTextView(View row);
-
-	protected abstract ProgressBar getEntryProgressBar(View row);
+	
+	protected abstract void setValue(final String key, final String value);
 }

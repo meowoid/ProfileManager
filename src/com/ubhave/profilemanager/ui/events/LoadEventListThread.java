@@ -1,14 +1,16 @@
 package com.ubhave.profilemanager.ui.events;
 
+import java.util.HashMap;
+import java.util.List;
+
 import android.widget.ListView;
 
-import com.ubhave.profilemanager.data.FrequencyDistribution;
 import com.ubhave.profilemanager.ui.AbstractProfileActivity;
 import com.ubhave.profilemanager.ui.LoadingThread;
 
 public abstract class LoadEventListThread extends LoadingThread
 {
-	private FrequencyDistribution distribution;
+	protected List<HashMap<String, String>> events;
 	
 	public LoadEventListThread(final AbstractProfileActivity ui)
 	{
@@ -18,11 +20,11 @@ public abstract class LoadEventListThread extends LoadingThread
 	@Override
 	protected boolean loadData()
 	{
-		distribution = loadDistribution();
-		return (distribution != null);
+		events = loadDistribution();
+		return (events != null);
 	}
 	
-	protected abstract FrequencyDistribution loadDistribution();
+	protected abstract List<HashMap<String, String>> loadDistribution();
 
 	@Override
 	protected void updateAdapter(final ListView listView)
