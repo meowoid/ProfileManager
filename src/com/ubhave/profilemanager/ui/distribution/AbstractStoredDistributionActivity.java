@@ -17,7 +17,6 @@ public abstract class AbstractStoredDistributionActivity extends AbstractDistrib
 				FrequencyDistribution distribution = null;
 				ProfileDataStore profileManager = ProfileDataStore.getInstance(ui);
 				String variableName = getDistributionVariableName();
-				
 				if (variableName != null)
 				{
 					if (profileManager.containsDistribution(variableName))

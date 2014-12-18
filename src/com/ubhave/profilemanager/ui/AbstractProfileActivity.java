@@ -56,13 +56,13 @@ public abstract class AbstractProfileActivity extends Activity
 				setVisibility(getLoadingProgressBar(), status == LOADING ? View.VISIBLE : View.GONE);
 				setVisibility(getListView(), status == LOADED_SUCCESS ? View.VISIBLE : View.GONE);
 				setVisibility(getNoDataView(), status == LOADED_FAIL ? View.VISIBLE : View.GONE);
-				if (status == LOADED_FAIL)
-				{
-					onNoDataAvailable();
-				}
 			}
 		});
 	}
+	
+	public abstract ListView getListView();
+	
+	public abstract void onNoDataAvailable();
 	
 	protected abstract TextView getScreenTitleView();
 
@@ -72,14 +72,9 @@ public abstract class AbstractProfileActivity extends Activity
 
 	protected abstract void loadData();
 
-	protected abstract void onNoDataAvailable();
-
 	protected abstract View getNoDataView();
-
-	public abstract ListView getListView();
 	
-	public abstract View getListViewHeader();
+	protected abstract View getListViewHeader();
 
 	protected abstract ProgressBar getLoadingProgressBar();
-
 }

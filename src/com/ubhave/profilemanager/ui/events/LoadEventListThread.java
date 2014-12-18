@@ -1,15 +1,16 @@
-package com.ubhave.profilemanager.ui.distribution;
+package com.ubhave.profilemanager.ui.events;
 
 import android.widget.ListView;
 
 import com.ubhave.profilemanager.data.FrequencyDistribution;
+import com.ubhave.profilemanager.ui.AbstractProfileActivity;
 import com.ubhave.profilemanager.ui.LoadingThread;
 
-public abstract class LoadDistributionThread extends LoadingThread
+public abstract class LoadEventListThread extends LoadingThread
 {
 	private FrequencyDistribution distribution;
 	
-	public LoadDistributionThread(final AbstractDistributionActivity ui)
+	public LoadEventListThread(final AbstractProfileActivity ui)
 	{
 		super(ui);
 	}
@@ -26,8 +27,7 @@ public abstract class LoadDistributionThread extends LoadingThread
 	@Override
 	protected void updateAdapter(final ListView listView)
 	{
-		AbstractDistributionActivity distributionUI = (AbstractDistributionActivity) ui;
-		listView.setAdapter(distributionUI.getAdapter(distribution));
+		
 	}
 	
 	@Override
