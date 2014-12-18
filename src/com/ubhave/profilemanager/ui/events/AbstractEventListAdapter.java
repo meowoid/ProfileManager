@@ -30,10 +30,10 @@ public abstract class AbstractEventListAdapter extends ArrayAdapter<HashMap<Stri
 		HashMap<String, String> entry = getItem(position);
 		for (String key : entry.keySet())
 		{
-			setValue(key, entry.get(key));
+			setValue(row, key, entry.get(key));
 		}
 		return row;
 	}
 	
-	protected abstract void setValue(final String key, final String value);
+	protected abstract void setValue(final View row, final String key, final String value);
 }

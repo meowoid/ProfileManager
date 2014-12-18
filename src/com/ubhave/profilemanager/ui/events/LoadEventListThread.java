@@ -3,6 +3,7 @@ package com.ubhave.profilemanager.ui.events;
 import java.util.HashMap;
 import java.util.List;
 
+import android.util.Log;
 import android.widget.ListView;
 
 import com.ubhave.profilemanager.ui.AbstractProfileActivity;
@@ -20,21 +21,22 @@ public abstract class LoadEventListThread extends LoadingThread
 	@Override
 	protected boolean loadData()
 	{
-		events = loadDistribution();
+		events = loadEvents();
 		return (events != null);
 	}
 	
-	protected abstract List<HashMap<String, String>> loadDistribution();
+	protected abstract List<HashMap<String, String>> loadEvents();
 
 	@Override
 	protected void updateAdapter(final ListView listView)
 	{
-		
+		AbstractEventListActivity eventUI = (AbstractEventListActivity) ui;
+		listView.setAdapter(eventUI.getAdapter(events));
 	}
 	
 	@Override
 	protected void setClickActions(final ListView listView, final boolean hasHeader)
 	{
-		
+	
 	}
 }
