@@ -1,4 +1,4 @@
-package com.ubhave.profilemanager.ui.home;
+package com.ubhave.profilemanager.ui.config;
 
 import java.util.List;
 

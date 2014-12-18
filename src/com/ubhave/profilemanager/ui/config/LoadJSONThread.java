@@ -1,4 +1,4 @@
-package com.ubhave.profilemanager.ui.home;
+package com.ubhave.profilemanager.ui.config;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -17,51 +17,36 @@ import com.ubhave.profilemanager.ui.LoadingThread;
 public class LoadJSONThread extends LoadingThread
 {
 	protected ArrayList<ProfileEntry> data;
+	private final AbstractProfileListActivity profileUI;
+	private final String configFileName;
+	private final String jsonProfileKey;
 
-	public LoadJSONThread(final AbstractProfileListActivity ui)
+	public LoadJSONThread(final AbstractProfileListActivity ui, final String fileName, final String jsonKey)
 	{
 		super(ui);
+		this.profileUI = ui;
+		this.configFileName = fileName;
+		this.jsonProfileKey = jsonKey;
 	}
 
+	@Override
 	protected boolean loadData()
 	{
 		try
 		{
 			JSONObject config = new JSONObject(loadFileContents());
-
-			String profileKey = ((AbstractProfileListActivity) ui).getProfileListKey();
-			JSONArray profile = config.getJSONArray(profileKey);
-
+			JSONArray profile = config.getJSONArray(jsonProfileKey);
 			data = new ArrayList<ProfileEntry>();
 			for (int i = 0; i < profile.length(); i++)
 			{
 				data.add(build((JSONObject) profile.get(i)));
 			}
-
 			return true;
 		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
 			return false;
-		}
-	}
-	
-	protected ProfileEntry build(JSONObject json) throws JSONException
-	{
-		return new ProfileEntry(json);
-	}
-
-	public String loadFileContents() throws Exception
-	{
-		String fileName = ((AbstractProfileListActivity) ui).getJSONConfigFileName();
-		try
-		{
-			return getContent(new BufferedReader(new InputStreamReader(ui.openFileInput(fileName))));
-		}
-		catch (Exception e)
-		{
-			return getContent(new BufferedReader(new InputStreamReader(ui.getAssets().open(fileName))));
 		}
 	}
 
@@ -80,31 +65,51 @@ public class LoadJSONThread extends LoadingThread
 		return fileContents.toString();
 	}
 
+	private String loadFileContents() throws Exception
+	{
+		try
+		{
+			return getContent(new BufferedReader(new InputStreamReader(ui.openFileInput(configFileName))));
+		}
+		catch (Exception e)
+		{
+			return getContent(new BufferedReader(new InputStreamReader(ui.getAssets().open(configFileName))));
+		}
+	}
+
+	protected ProfileEntry build(JSONObject json) throws JSONException
+	{
+		return new ProfileEntry(json);
+	}
+
 	@Override
-	protected void updateListView(final ListView listView, final boolean hasHeader)
+	protected void setClickActions(final ListView listView, final boolean hasHeader)
+	{
+		OnItemClickListener clickListener = profileUI.getOnItemClickListener(data, hasHeader);
+		if (clickListener != null)
+		{
+			listView.setOnItemClickListener(clickListener);
+		}
+
+		OnItemLongClickListener holdListener = profileUI.getOnItemLongClickListener(data, hasHeader);
+		if (holdListener != null)
+		{
+			listView.setOnItemLongClickListener(holdListener);
+		}
+	}
+
+	@Override
+	protected void updateAdapter(final ListView listView)
 	{
 		if (data != null)
 		{
-			AbstractProfileListActivity profileHome = (AbstractProfileListActivity) ui;
 			AbstractProfileListAdapter adapter = (AbstractProfileListAdapter) listView.getAdapter();
 			if (adapter != null)
 			{
 				adapter.clear();
 				adapter.notifyDataSetChanged();
 			}
-			listView.setAdapter(profileHome.getAdapter(data));
-			
-			OnItemClickListener clickListener = profileHome.getOnItemClickListener(data, hasHeader);
-			if (clickListener != null)
-			{
-				listView.setOnItemClickListener(clickListener);
-			}
-			
-			OnItemLongClickListener holdListener = profileHome.getOnItemLongClickListener(data, hasHeader);
-			if (holdListener != null)
-			{
-				listView.setOnItemLongClickListener(holdListener);
-			}
+			listView.setAdapter(profileUI.getAdapter(data));
 		}
 	}
 }

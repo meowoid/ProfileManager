@@ -1,4 +1,4 @@
-package com.ubhave.profilemanager.ui.home;
+package com.ubhave.profilemanager.ui.config;
 
 import java.util.ArrayList;
 
@@ -14,28 +14,23 @@ public abstract class AbstractProfileListActivity extends AbstractProfileActivit
 	public final static String CONFIG_FILE_NAME = "profile-list.json";
 	public final static String PROFILE_LIST_KEY = "profile";
 
-	public String getJSONConfigFileName()
+	protected String getJSONConfigFileName()
 	{
 		// Override this to set your own config file name
 		return CONFIG_FILE_NAME;
 	}
 
-	public String getProfileListKey()
+	protected String getProfileListKey()
 	{
+		// Override this to set your own JSON config key
 		return PROFILE_LIST_KEY;
 	}
 
 	@Override
 	protected void loadData()
 	{
-		new LoadJSONThread(this).start();
+		new LoadJSONThread(this, getJSONConfigFileName(), getProfileListKey()).start();
 	}
-
-	protected abstract AbstractProfileListAdapter getAdapter(final ArrayList<ProfileEntry> data);
-	
-	protected abstract void onItemClicked(final ProfileEntry entry);
-	
-	protected abstract void onItemLongClicked(final ProfileEntry entry);
 	
 	public OnItemClickListener getOnItemClickListener(final ArrayList<ProfileEntry> data, final boolean hasHeader)
 	{
@@ -69,4 +64,10 @@ public abstract class AbstractProfileListActivity extends AbstractProfileActivit
 			}
 		};
 	}
+	
+	protected abstract AbstractProfileListAdapter getAdapter(final ArrayList<ProfileEntry> data);
+	
+	public abstract void onItemClicked(final ProfileEntry entry);
+	
+	public abstract void onItemLongClicked(final ProfileEntry entry);
 }
