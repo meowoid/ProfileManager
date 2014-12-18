@@ -60,49 +60,4 @@ public class FrequencyDistribution extends HashMap<String, Integer>
 		}
 		return sum;
 	}
-
-	/*
-	 * Parcel Related
-	 */
-
-//	public FrequencyDistribution(Parcel in)
-//	{
-//		super();
-//		int size = in.readInt();
-//		for (int i = 0; i < size; i++)
-//		{
-//			String key = in.readString();
-//			Integer value = in.readInt();
-//			put(key, value);
-//		}
-//	}
-//	@Override
-//	public int describeContents()
-//	{
-//		return 0;
-//	}
-//
-//	@Override
-//	public void writeToParcel(Parcel dest, int flags)
-//	{
-//		dest.writeInt(keySet().size());
-//		for (String key : keySet())
-//		{
-//			dest.writeString(key);
-//			dest.writeInt(get(key));
-//		}
-//	}
-//
-//	public static final Parcelable.Creator<FrequencyDistribution> CREATOR = new Parcelable.Creator<FrequencyDistribution>()
-//	{
-//		public FrequencyDistribution createFromParcel(Parcel in)
-//		{
-//			return new FrequencyDistribution(in);
-//		}
-//
-//		public FrequencyDistribution[] newArray(int size)
-//		{
-//			return new FrequencyDistribution[size];
-//		}
-//	};
 }
