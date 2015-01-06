@@ -3,7 +3,6 @@ package com.ubhave.profilemanager.ui.events;
 import java.util.HashMap;
 import java.util.List;
 
-import android.util.Log;
 import android.widget.ListView;
 
 import com.ubhave.profilemanager.ui.AbstractProfileActivity;

@@ -11,20 +11,9 @@ import com.ubhave.profilemanager.ui.AbstractProfileActivity;
 
 public abstract class AbstractProfileListActivity extends AbstractProfileActivity
 {
-	public final static String CONFIG_FILE_NAME = "profile-list.json";
-	public final static String PROFILE_LIST_KEY = "profile";
+	protected abstract String getJSONConfigFileName();
 
-	protected String getJSONConfigFileName()
-	{
-		// Override this to set your own config file name
-		return CONFIG_FILE_NAME;
-	}
-
-	protected String getProfileListKey()
-	{
-		// Override this to set your own JSON config key
-		return PROFILE_LIST_KEY;
-	}
+	protected abstract String getProfileListKey();
 
 	@Override
 	protected void loadData()
