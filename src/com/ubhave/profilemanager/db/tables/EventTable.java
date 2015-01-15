@@ -11,9 +11,12 @@ import org.json.JSONObject;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 public class EventTable extends AbstractTable
 {
+	public final static int NOT_FOUND = -1;
+	protected final static String key = "primaryKey";
 	protected final static String timeStamp = "timeStamp";
 	protected final static String variableMap = "variableMap";
 	
@@ -27,6 +30,7 @@ public class EventTable extends AbstractTable
 	{
 		database.execSQL("CREATE TABLE IF NOT EXISTS " + tableName
 				+ " ("
+				+ key + " INTEGER PRIMARY KEY, "
 				+ timeStamp + " INTEGER, "
 				+ variableMap + " TEXT NOT NULL"
 				+ ");");
@@ -44,6 +48,78 @@ public class EventTable extends AbstractTable
 		content.put(timeStamp, entryTime);
 		content.put(variableMap, data.toString());
 		database.insert(tableName, null, content);
+	}
+	
+	public int getKey(final SQLiteDatabase database, final HashMap<String, String> values)
+	{
+		int eventKey = NOT_FOUND;
+		Cursor cursor = database.query(tableName, new String[]{key, variableMap}, null, null, null, null, null);
+		if (cursor != null)
+		{
+			int keyColumn = cursor.getColumnIndex(key);
+			int eventColumn = cursor.getColumnIndex(variableMap);
+			
+			cursor.moveToFirst();
+			while (!cursor.isAfterLast())
+			{
+				try
+				{
+					String map = cursor.getString(eventColumn);
+					JSONObject event = new JSONObject(map);
+					@SuppressWarnings("unchecked")
+					Iterator<String> keys = event.keys();
+					boolean equal = true;
+					while (keys.hasNext())
+					{
+						String key = keys.next();
+						String value = event.getString(key);
+						String comparison = values.get(key);
+						if (!value.equals(comparison))
+						{
+							equal = false;
+							break;
+						}
+					}
+					if (equal)
+					{
+						eventKey = cursor.getInt(keyColumn);
+						break;
+					}
+				}
+				catch (Exception e)
+				{
+					e.printStackTrace();
+				}
+				cursor.moveToNext();
+			}
+			cursor.close();
+		}
+		return eventKey;
+	}
+	
+	public void remove(final SQLiteDatabase database, final HashMap<String, String> values)
+	{
+		int eventKey = getKey(database, values);
+		int rows = database.delete(tableName, key + " == ?", new String[]{""+eventKey});
+		Log.d(tableName, "Deleted "+rows+" rows.");
+	}
+	
+	public void update(final SQLiteDatabase database, final int key, final HashMap<String, String> values)
+	{
+		JSONObject data = toJSON(values);
+		update(database, key, data);
+	}
+	
+	public void update(final SQLiteDatabase database, final int eventKey, final JSONObject data)
+	{
+		int rows = 0;
+		if (eventKey != NOT_FOUND)
+		{
+			ContentValues content = new ContentValues();
+			content.put(variableMap, data.toString());
+			rows = database.update(tableName, content, key + " == ?", new String[]{""+eventKey});
+		}
+		Log.d(tableName, "Updated "+rows+" rows (Key found: "+(eventKey != NOT_FOUND)+").");
 	}
 	
 	public int countEvents(final SQLiteDatabase database)
@@ -66,7 +142,8 @@ public class EventTable extends AbstractTable
 		{
 			long one_day = 1000L * 60 * 60 * 24;
 			long timeLimit = System.currentTimeMillis() - (daysInPast * one_day);
-			Cursor cursor = database.query(tableName, new String[]{variableMap}, timeStamp+" > ?", new String[]{""+timeLimit}, null, null, null);
+			String orderBy = timeStamp + " DESC";
+			Cursor cursor = database.query(tableName, new String[]{variableMap}, timeStamp+" > ?", new String[]{""+timeLimit}, null, null, orderBy);
 			if (cursor != null)
 			{
 				int eventIndex = cursor.getColumnIndex(variableMap);

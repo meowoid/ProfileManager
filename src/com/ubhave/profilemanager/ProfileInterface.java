@@ -34,6 +34,11 @@ public interface ProfileInterface
 	public void addEvent(final String groupName, final long entryTimeInMillis, final HashMap<String, String> event);
 	public void addEvent(final String groupName, final long entryTimeInMillis, final JSONObject event);
 	
+	public int getEventKey(final String groupName, final HashMap<String, String> event);
+	
+	public void removeEvent(final String groupName, final HashMap<String, String> event);
+	public void updateEvent(final String groupName, final int key, final HashMap<String, String> newEvent);
+	
 	public int countEvents(final String groupName);
 	
 	/*

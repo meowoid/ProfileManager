@@ -31,6 +31,28 @@ public class EventDatabase extends AbstractProfileDatabase
 		database.close();
 	}
 	
+	public void update(final int key, final HashMap<String, String> values)
+	{
+		SQLiteDatabase database = getWritableDatabase();
+		((EventTable) table).update(database, key, values);
+		database.close();
+	}
+	
+	public int getKey(final HashMap<String, String> values)
+	{
+		SQLiteDatabase database = getReadableDatabase();
+		int key = ((EventTable) table).getKey(database, values);
+		database.close();
+		return key;
+	}
+	
+	public void remove(final HashMap<String, String> values)
+	{
+		SQLiteDatabase database = getWritableDatabase();
+		((EventTable) table).remove(database, values);
+		database.close();
+	}
+	
 	public List<HashMap<String, String>> getEvents(int daysInPast)
 	{
 		SQLiteDatabase database = getReadableDatabase();

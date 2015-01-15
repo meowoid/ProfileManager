@@ -28,6 +28,10 @@ public abstract class AbstractEventListActivity extends AbstractProfileActivity
 				if (listName != null)
 				{
 					events = profileManager.getEvents(listName, getDaysInPast());
+					if (events.isEmpty())
+					{
+						return null;
+					}
 				}
 				return events;
 			}

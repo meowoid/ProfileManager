@@ -149,6 +149,12 @@ public class ProfileDataStore implements ProfileInterface
 		}
 		return database;
 	}
+	
+	public int getEventKey(final String groupName, final HashMap<String, String> event)
+	{
+		EventDatabase database = getEventDatabase(groupName);
+		return database.getKey(event);
+	}
 
 	@Override
 	public void addEvent(final String groupName, final long entryTimeInMillis, final HashMap<String, String> event)
@@ -157,12 +163,28 @@ public class ProfileDataStore implements ProfileInterface
 		database.add(entryTimeInMillis, event);
 		broadcast(TYPE_EVENTS_CHANGED, groupName);
 	}
-
+	
 	@Override
 	public void addEvent(final String groupName, final long entryTimeInMillis, final JSONObject event)
 	{
 		EventDatabase database = getEventDatabase(groupName);
 		database.add(entryTimeInMillis, event);
+		broadcast(TYPE_EVENTS_CHANGED, groupName);
+	}
+	
+	@Override
+	public void removeEvent(final String groupName, final HashMap<String, String> event)
+	{
+		EventDatabase database = getEventDatabase(groupName);
+		database.remove(event);
+		broadcast(TYPE_EVENTS_CHANGED, groupName);
+	}
+	
+	@Override
+	public void updateEvent(final String groupName, final int key, final HashMap<String, String> event)
+	{
+		EventDatabase database = getEventDatabase(groupName);
+		database.update(key, event);
 		broadcast(TYPE_EVENTS_CHANGED, groupName);
 	}
 
